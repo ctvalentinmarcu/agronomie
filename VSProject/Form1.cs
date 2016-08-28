@@ -12,6 +12,8 @@ using OxyPlot;
 using OxyPlot.Series;
 using OxyPlot.WindowsForms;
 
+using ExportToExcel;
+
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
@@ -68,6 +70,11 @@ namespace WindowsFormsApplication1
         private void button2_Click(object sender, EventArgs e)
         {
             refreshInterpretation();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            saveFileDialog3.ShowDialog();
         }
 
 
@@ -503,6 +510,8 @@ namespace WindowsFormsApplication1
             return prag;
         }
 
+        
+
         private void computeSums()
         {
             sumN0 = inputs.Count;
@@ -517,6 +526,8 @@ namespace WindowsFormsApplication1
             //Console.WriteLine("Sums: {0} {1} {2} {3} {4} {5} {6} {7}", 
             //  sumN0, sumN1, sumN2, sumN3, sumN4, sumFN0, sumFN1, sumFN2);
         }
+
+        
 
         private double det(double[,] a)
         {
@@ -576,6 +587,14 @@ namespace WindowsFormsApplication1
             string fileName = saveFileDialog2.FileName;
             var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
             pngExporter.ExportToFile(plotView2.Model, fileName);
+        }
+
+        private void saveFileDialog3_FileOk(object sender, CancelEventArgs e)
+        {
+            string fileName = saveFileDialog3.FileName;
+            DataSet excelDataSet = new DataSet();
+            excelDataSet.Tables.Add(inputDataset.Tables[inputTableName].Copy());
+            CreateExcelFile.CreateExcelDocument(excelDataSet, fileName);
         }
     }
 }

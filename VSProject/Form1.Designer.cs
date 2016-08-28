@@ -45,6 +45,8 @@
             this.plotView2 = new OxyPlot.WindowsForms.PlotView();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
+            this.saveFileDialog3 = new System.Windows.Forms.SaveFileDialog();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.inputGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inputDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownPretProdus)).BeginInit();
@@ -227,12 +229,13 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label4.Location = new System.Drawing.Point(29, 606);
+            this.label4.Location = new System.Drawing.Point(13, 618);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(197, 54);
+            this.label4.Size = new System.Drawing.Size(242, 54);
             this.label4.TabIndex = 24;
-            this.label4.Text = "Pas 3: Optional, dublu-clic pe fiecare grafic pentru exportare (format .png) in a" +
-    "fara aplicatiei";
+            this.label4.Text = "Optional, dublu-clic pe fiecare grafic pentru exportare (format .png) in afara ap" +
+    "licatiei";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // plotView2
             // 
@@ -260,10 +263,28 @@
             this.saveFileDialog2.FileName = "f1p1plot";
             this.saveFileDialog2.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog2_FileOk);
             // 
+            // saveFileDialog3
+            // 
+            this.saveFileDialog3.DefaultExt = "xlsx";
+            this.saveFileDialog3.FileName = "statistici";
+            this.saveFileDialog3.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog3_FileOk);
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button3.Location = new System.Drawing.Point(12, 592);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(243, 23);
+            this.button3.TabIndex = 27;
+            this.button3.Text = "Pas 3: Exporta statistici (Excel)";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(991, 681);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.plotView2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.updownChFixe);
@@ -312,6 +333,8 @@
         private OxyPlot.WindowsForms.PlotView plotView2;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog2;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog3;
+        private System.Windows.Forms.Button button3;
     }
 }
 
