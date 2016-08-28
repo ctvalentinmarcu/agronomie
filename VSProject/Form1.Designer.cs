@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileButton = new System.Windows.Forms.Button();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.inputGridView = new System.Windows.Forms.DataGridView();
@@ -48,6 +50,7 @@
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog3 = new System.Windows.Forms.SaveFileDialog();
             this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.inputGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inputDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownPretProdus)).BeginInit();
@@ -57,12 +60,15 @@
             // 
             // openFileButton
             // 
+            this.openFileButton.BackColor = System.Drawing.Color.ForestGreen;
+            this.openFileButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.openFileButton.ForeColor = System.Drawing.Color.Yellow;
             this.openFileButton.Location = new System.Drawing.Point(70, 12);
             this.openFileButton.Name = "openFileButton";
-            this.openFileButton.Size = new System.Drawing.Size(201, 23);
+            this.openFileButton.Size = new System.Drawing.Size(201, 28);
             this.openFileButton.TabIndex = 0;
             this.openFileButton.Text = "Deschide fisier";
-            this.openFileButton.UseVisualStyleBackColor = true;
+            this.openFileButton.UseVisualStyleBackColor = false;
             this.openFileButton.Click += new System.EventHandler(this.openFileButton_Click);
             // 
             // openFileDialog2
@@ -72,22 +78,39 @@
             // 
             // inputGridView
             // 
-            this.inputGridView.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.inputGridView.BackgroundColor = System.Drawing.Color.ForestGreen;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inputGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.inputGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.Format = "N3";
-            dataGridViewCellStyle1.NullValue = null;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.inputGridView.DefaultCellStyle = dataGridViewCellStyle1;
-            this.inputGridView.Location = new System.Drawing.Point(58, 53);
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.DarkGreen;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle20.Format = "N3";
+            dataGridViewCellStyle20.NullValue = null;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.inputGridView.DefaultCellStyle = dataGridViewCellStyle20;
+            this.inputGridView.GridColor = System.Drawing.Color.Yellow;
+            this.inputGridView.Location = new System.Drawing.Point(48, 53);
             this.inputGridView.Name = "inputGridView";
             this.inputGridView.ReadOnly = true;
-            this.inputGridView.Size = new System.Drawing.Size(242, 234);
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle21.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inputGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            this.inputGridView.Size = new System.Drawing.Size(244, 234);
             this.inputGridView.TabIndex = 1;
             // 
             // inputDataSet
@@ -96,18 +119,21 @@
             // 
             // computeCoefficientsButton
             // 
-            this.computeCoefficientsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.computeCoefficientsButton.Location = new System.Drawing.Point(57, 305);
+            this.computeCoefficientsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.computeCoefficientsButton.ForeColor = System.Drawing.Color.Yellow;
+            this.computeCoefficientsButton.Location = new System.Drawing.Point(44, 306);
             this.computeCoefficientsButton.Name = "computeCoefficientsButton";
-            this.computeCoefficientsButton.Size = new System.Drawing.Size(243, 23);
+            this.computeCoefficientsButton.Size = new System.Drawing.Size(270, 28);
             this.computeCoefficientsButton.TabIndex = 2;
             this.computeCoefficientsButton.Text = "Pas 1: Calculeaza functia de productie";
-            this.computeCoefficientsButton.UseVisualStyleBackColor = true;
+            this.computeCoefficientsButton.UseVisualStyleBackColor = false;
             this.computeCoefficientsButton.Click += new System.EventHandler(this.computeCoefficientsButton_Click);
             // 
             // plotView1
             // 
-            this.plotView1.BackColor = System.Drawing.Color.White;
+            this.plotView1.BackColor = System.Drawing.Color.ForestGreen;
+            this.plotView1.BackgroundImage = global::MarcuLicenta.Properties.Resources.gradient3;
+            this.plotView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.plotView1.Location = new System.Drawing.Point(320, 12);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
@@ -121,19 +147,21 @@
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button2.Location = new System.Drawing.Point(57, 339);
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button2.ForeColor = System.Drawing.Color.Yellow;
+            this.button2.Location = new System.Drawing.Point(44, 340);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(243, 23);
+            this.button2.Size = new System.Drawing.Size(270, 28);
             this.button2.TabIndex = 4;
             this.button2.Text = "Pas 2: Interpretarea economica";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.ForeColor = System.Drawing.Color.Yellow;
             this.label1.Location = new System.Drawing.Point(80, 378);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(172, 16);
@@ -194,6 +222,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label2.ForeColor = System.Drawing.Color.Yellow;
             this.label2.Location = new System.Drawing.Point(80, 449);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(187, 16);
@@ -228,6 +257,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label3.ForeColor = System.Drawing.Color.Yellow;
             this.label3.Location = new System.Drawing.Point(102, 522);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(135, 16);
@@ -237,6 +267,7 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label4.ForeColor = System.Drawing.Color.Yellow;
             this.label4.Location = new System.Drawing.Point(58, 618);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(242, 54);
@@ -247,7 +278,9 @@
             // 
             // plotView2
             // 
-            this.plotView2.BackColor = System.Drawing.Color.White;
+            this.plotView2.BackColor = System.Drawing.Color.ForestGreen;
+            this.plotView2.BackgroundImage = global::MarcuLicenta.Properties.Resources.gradient3;
+            this.plotView2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.plotView2.Location = new System.Drawing.Point(320, 417);
             this.plotView2.Name = "plotView2";
             this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
@@ -279,19 +312,39 @@
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button3.Location = new System.Drawing.Point(57, 592);
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button3.ForeColor = System.Drawing.Color.Yellow;
+            this.button3.Location = new System.Drawing.Point(44, 593);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(243, 23);
+            this.button3.Size = new System.Drawing.Size(270, 28);
             this.button3.TabIndex = 27;
             this.button3.Text = "Pas 3: Exporta statistici (Excel)";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.Transparent;
+            this.button4.BackgroundImage = global::MarcuLicenta.Properties.Resources.info;
+            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.button4.ForeColor = System.Drawing.Color.Yellow;
+            this.button4.Location = new System.Drawing.Point(3, 6);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(40, 40);
+            this.button4.TabIndex = 28;
+            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
             this.AutoScroll = true;
+            this.BackColor = System.Drawing.Color.ForestGreen;
+            this.BackgroundImage = global::MarcuLicenta.Properties.Resources.gradient3;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1076, 672);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.plotView2);
             this.Controls.Add(this.label4);
@@ -343,6 +396,7 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog2;
         private System.Windows.Forms.SaveFileDialog saveFileDialog3;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }
 

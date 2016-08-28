@@ -585,7 +585,10 @@ namespace WindowsFormsApplication1
             //  sumN0, sumN1, sumN2, sumN3, sumN4, sumFN0, sumFN1, sumFN2);
         }
 
-        
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private double det(double[,] a)
         {
