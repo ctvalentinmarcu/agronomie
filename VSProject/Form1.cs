@@ -55,11 +55,87 @@ namespace WindowsFormsApplication1
             BindingSource bs1 = new BindingSource();
             bs1.DataSource = inputDataset.Tables[inputTableName];
             inputGridView.DataSource = bs1;
+            inputGridView.ReadOnly = false;
+            inputGridView.DefaultCellStyle.Format = "N2";
+            inputGridView.RowsDefaultCellStyle.Format = "N2";
+            inputGridView.KeyPress += new KeyPressEventHandler(KeyPressed);
         }
 
 
+        private void readDataFromInputGrid()
+        {
+            //return;
+            DataTable tempTable = new DataTable();
+            tempTable.Columns.Add("Doza");
+            tempTable.Columns.Add("Productie");
+            tempTable.Rows.Clear();
+            inputs.Clear();
+            outputs.Clear();
+
+            foreach(DataGridViewRow gridRow in inputGridView.Rows)
+            {
+                DataRow row = tempTable.NewRow();
+
+                if (gridRow.Cells[0].Value == null || gridRow.Cells[1].Value == null)
+                {
+                    continue;
+                }
+
+                string s1 = gridRow.Cells[0].Value.ToString();
+                string s2 = gridRow.Cells[1].Value.ToString();
+
+                if (s1 == null || s2 == null || s1.Length == 0 || s2.Length == 0)
+                {
+                    continue;
+                }
+
+                double N = 1;
+                double f = 0;
+                try
+                {
+                    N = double.Parse(s1.Trim(), System.Globalization.NumberStyles.Number);
+                    f = double.Parse(s2.Trim(), System.Globalization.NumberStyles.Number);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+                row[0] = N; //double.Parse((string)gridRow.Cells[0].Value, System.Globalization.NumberStyles.Number);
+                row[1] = f;
+                inputs.Add(N);
+                outputs.Add(f);
+                tempTable.Rows.Add(row);
+            }
+
+            //inputDataSet.Tables[inputTableName].Rows.Clear(); //tempTable.Rows;
+            //inputDataSet.Tables[inputTableName].Rows.Add(tempTable.Rows);
+
+            inputDataset = new DataSet();
+            //inputDataset.Tables.Add(inputTableName);
+            tempTable.TableName = inputTableName;
+            inputDataset.Tables.Add(tempTable);
+
+            //inputDataset.Tables[inputTableName].Columns.Add("Doza");
+            //inputDataset.Tables[inputTableName].Columns.Add("Productie");
+
+            BindingSource bs1 = new BindingSource();
+            bs1.DataSource = inputDataset.Tables[inputTableName];
+            inputGridView.DataSource = bs1;
+            //inputGridView.ReadOnly = false;
+            //inputGridView.DefaultCellStyle.Format = "N2";
+            inputGridView.KeyPress += new KeyPressEventHandler(KeyPressed);
+        }
 
 
+        private void KeyPressed(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar)
+                   && !char.IsDigit(e.KeyChar)
+                   && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
 
 
         private void openFileButton_Click(object sender, EventArgs e)
@@ -74,6 +150,10 @@ namespace WindowsFormsApplication1
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (inputs.Count < 3)
+            {
+                return;
+            }
             saveFileDialog3.ShowDialog();
         }
 
@@ -137,11 +217,6 @@ namespace WindowsFormsApplication1
             fileStream.Close();
         }
 
-        private void inputGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void updownPretFactor_ValueChanged(object sender, EventArgs e)
         {
             refreshInterpretation();
@@ -159,6 +234,12 @@ namespace WindowsFormsApplication1
 
         private void computeCoefficients()
         {
+            readDataFromInputGrid();
+            if(inputs.Count < 3)
+            {
+                return;
+            }
+
             computeSums();
 
             double[,] A = new double[3, 3] { { sumN2, sumN1, sumN0 }, { sumN3, sumN2, sumN1 }, { sumN4, sumN3, sumN2 } };
@@ -231,6 +312,10 @@ namespace WindowsFormsApplication1
 
         private void refreshInterpretation()
         {
+            if (inputs.Count < 3)
+            {
+                return;
+            }
             refreshPlot1();
             refreshPlot2();
         }
@@ -307,13 +392,6 @@ namespace WindowsFormsApplication1
 
             var discreteSeries = new StemSeries();
 
-            //var maxTehnicPoint = new DataPoint(maxTehnic, F(maxTehnic)*py);
-            //discreteSeries.Points.Add(maxTehnicPoint);
-            //var maxTehnicPoint2 = new DataPoint(maxTehnic, maxTehnic*pN + chF);
-            //discreteSeries.Points.Add(maxTehnicPoint2);
-            //var maxTehnicPoint3 = new DataPoint(maxTehnic, F(maxTehnic) * py - (maxTehnic * pN + chF));
-            //discreteSeries.Points.Add(maxTehnicPoint3);
-
             var maxTehnicPointMin = new DataPoint(maxTehnic, minY);
             var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
             discreteSeries.Points.Add(maxTehnicPointMin);
@@ -322,13 +400,6 @@ namespace WindowsFormsApplication1
             model.Series.Add(discreteSeries);
 
             var discreteSeries2 = new StemSeries();
-
-            //var optEcPoint = new DataPoint(optimEconomic, F(optimEconomic)*py);
-            //discreteSeries2.Points.Add(optEcPoint);
-            //var optEcPoint2 = new DataPoint(optimEconomic, optimEconomic * pN + chF);
-            //discreteSeries2.Points.Add(optEcPoint2);
-            //var optEcPoint3 = new DataPoint(optimEconomic, F(optimEconomic) * py - (optimEconomic * pN + chF));
-            //discreteSeries2.Points.Add(optEcPoint3);
 
             var optEcPointMin = new DataPoint(optimEconomic, minY);
             var optEcPointMax = new DataPoint(optimEconomic, maxY);
@@ -429,13 +500,6 @@ namespace WindowsFormsApplication1
 
             var discreteSeries = new StemSeries();
 
-            //var maxTehnicPoint = new DataPoint(maxTehnic, Fd(maxTehnic) * py);
-            //discreteSeries.Points.Add(maxTehnicPoint);
-            //var maxTehnicPoint2 = new DataPoint(maxTehnic, pN);
-            //discreteSeries.Points.Add(maxTehnicPoint2);
-            //var maxTehnicPoint3 = new DataPoint(maxTehnic, Fd(maxTehnic) * py - pN);
-            //discreteSeries.Points.Add(maxTehnicPoint3);
-
             var maxTehnicPointMin = new DataPoint(maxTehnic, minY);
             discreteSeries.Points.Add(maxTehnicPointMin);
             var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
@@ -444,12 +508,6 @@ namespace WindowsFormsApplication1
 
             var discreteSeries2 = new StemSeries();
 
-            //var optEcPoint = new DataPoint(optimEconomic, Fd(optimEconomic) * py);
-            //discreteSeries2.Points.Add(optEcPoint);
-            //var optEcPoint2 = new DataPoint(optimEconomic, pN);
-            //discreteSeries2.Points.Add(optEcPoint2);
-            //var optEcPoint3 = new DataPoint(optimEconomic, Fd(optimEconomic) * py - pN);
-            //discreteSeries2.Points.Add(optEcPoint3);
 
             var optEcPointMin = new DataPoint(optimEconomic, minY);
             discreteSeries2.Points.Add(optEcPointMin);
