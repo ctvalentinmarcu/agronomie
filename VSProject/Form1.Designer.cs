@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.openFileButton = new System.Windows.Forms.Button();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.inputGridView = new System.Windows.Forms.DataGridView();
@@ -50,7 +51,10 @@
             this.saveFileDialog2 = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialog3 = new System.Windows.Forms.SaveFileDialog();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.info0 = new System.Windows.Forms.Button();
+            this.info1 = new System.Windows.Forms.Button();
+            this.info2 = new System.Windows.Forms.Button();
+            this.info3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.inputGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inputDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownPretProdus)).BeginInit();
@@ -79,37 +83,37 @@
             // inputGridView
             // 
             this.inputGridView.BackgroundColor = System.Drawing.Color.ForestGreen;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle19.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.Yellow;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inputGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inputGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.inputGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.Color.DarkGreen;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Yellow;
-            dataGridViewCellStyle20.Format = "N3";
-            dataGridViewCellStyle20.NullValue = null;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.inputGridView.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.DarkGreen;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle2.Format = "N3";
+            dataGridViewCellStyle2.NullValue = null;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.inputGridView.DefaultCellStyle = dataGridViewCellStyle2;
             this.inputGridView.GridColor = System.Drawing.Color.Yellow;
             this.inputGridView.Location = new System.Drawing.Point(48, 53);
             this.inputGridView.Name = "inputGridView";
             this.inputGridView.ReadOnly = true;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle21.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.Yellow;
-            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inputGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inputGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.inputGridView.Size = new System.Drawing.Size(244, 234);
             this.inputGridView.TabIndex = 1;
             // 
@@ -121,7 +125,7 @@
             // 
             this.computeCoefficientsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.computeCoefficientsButton.ForeColor = System.Drawing.Color.Yellow;
-            this.computeCoefficientsButton.Location = new System.Drawing.Point(44, 306);
+            this.computeCoefficientsButton.Location = new System.Drawing.Point(44, 300);
             this.computeCoefficientsButton.Name = "computeCoefficientsButton";
             this.computeCoefficientsButton.Size = new System.Drawing.Size(270, 28);
             this.computeCoefficientsButton.TabIndex = 2;
@@ -131,8 +135,11 @@
             // 
             // plotView1
             // 
+            this.plotView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.plotView1.BackColor = System.Drawing.Color.ForestGreen;
-            this.plotView1.BackgroundImage = global::MarcuLicenta.Properties.Resources.gradient3;
+            this.plotView1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("plotView1.BackgroundImage")));
             this.plotView1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.plotView1.Location = new System.Drawing.Point(320, 12);
             this.plotView1.Name = "plotView1";
@@ -147,9 +154,10 @@
             // 
             // button2
             // 
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.button2.ForeColor = System.Drawing.Color.Yellow;
-            this.button2.Location = new System.Drawing.Point(44, 340);
+            this.button2.Location = new System.Drawing.Point(44, 346);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(270, 28);
             this.button2.TabIndex = 4;
@@ -159,10 +167,11 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.ForeColor = System.Drawing.Color.Yellow;
-            this.label1.Location = new System.Drawing.Point(80, 378);
+            this.label1.Location = new System.Drawing.Point(80, 385);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(172, 16);
             this.label1.TabIndex = 6;
@@ -170,6 +179,7 @@
             // 
             // updownPretProdus
             // 
+            this.updownPretProdus.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.updownPretProdus.DecimalPlaces = 2;
             this.updownPretProdus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.updownPretProdus.Increment = new decimal(new int[] {
@@ -177,7 +187,7 @@
             0,
             0,
             65536});
-            this.updownPretProdus.Location = new System.Drawing.Point(130, 397);
+            this.updownPretProdus.Location = new System.Drawing.Point(130, 404);
             this.updownPretProdus.Minimum = new decimal(new int[] {
             1,
             0,
@@ -195,6 +205,7 @@
             // 
             // updownPretFactor
             // 
+            this.updownPretFactor.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.updownPretFactor.DecimalPlaces = 2;
             this.updownPretFactor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.updownPretFactor.Increment = new decimal(new int[] {
@@ -202,7 +213,7 @@
             0,
             0,
             65536});
-            this.updownPretFactor.Location = new System.Drawing.Point(130, 468);
+            this.updownPretFactor.Location = new System.Drawing.Point(130, 461);
             this.updownPretFactor.Minimum = new decimal(new int[] {
             1,
             0,
@@ -220,10 +231,11 @@
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label2.ForeColor = System.Drawing.Color.Yellow;
-            this.label2.Location = new System.Drawing.Point(80, 449);
+            this.label2.Location = new System.Drawing.Point(80, 442);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(187, 16);
             this.label2.TabIndex = 20;
@@ -231,13 +243,14 @@
             // 
             // updownChFixe
             // 
+            this.updownChFixe.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.updownChFixe.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.updownChFixe.Increment = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.updownChFixe.Location = new System.Drawing.Point(130, 541);
+            this.updownChFixe.Location = new System.Drawing.Point(130, 521);
             this.updownChFixe.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -255,10 +268,11 @@
             // 
             // label3
             // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label3.ForeColor = System.Drawing.Color.Yellow;
-            this.label3.Location = new System.Drawing.Point(102, 522);
+            this.label3.Location = new System.Drawing.Point(102, 502);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(135, 16);
             this.label3.TabIndex = 22;
@@ -266,9 +280,10 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label4.ForeColor = System.Drawing.Color.Yellow;
-            this.label4.Location = new System.Drawing.Point(58, 618);
+            this.label4.Location = new System.Drawing.Point(58, 610);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(242, 54);
             this.label4.TabIndex = 24;
@@ -278,8 +293,10 @@
             // 
             // plotView2
             // 
+            this.plotView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.plotView2.BackColor = System.Drawing.Color.ForestGreen;
-            this.plotView2.BackgroundImage = global::MarcuLicenta.Properties.Resources.gradient3;
+            this.plotView2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("plotView2.BackgroundImage")));
             this.plotView2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.plotView2.Location = new System.Drawing.Point(320, 417);
             this.plotView2.Name = "plotView2";
@@ -312,9 +329,10 @@
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.button3.ForeColor = System.Drawing.Color.Yellow;
-            this.button3.Location = new System.Drawing.Point(44, 593);
+            this.button3.Location = new System.Drawing.Point(44, 580);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(270, 28);
             this.button3.TabIndex = 27;
@@ -322,29 +340,79 @@
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // info0
             // 
-            this.button4.BackColor = System.Drawing.Color.Transparent;
-            this.button4.BackgroundImage = global::MarcuLicenta.Properties.Resources.info;
-            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button4.ForeColor = System.Drawing.Color.Yellow;
-            this.button4.Location = new System.Drawing.Point(3, 6);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(40, 40);
-            this.button4.TabIndex = 28;
-            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.info0.BackColor = System.Drawing.Color.Transparent;
+            this.info0.BackgroundImage = global::MarcuLicenta.Properties.Resources.info;
+            this.info0.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.info0.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.info0.ForeColor = System.Drawing.Color.Yellow;
+            this.info0.Location = new System.Drawing.Point(3, 6);
+            this.info0.Name = "info0";
+            this.info0.Size = new System.Drawing.Size(40, 40);
+            this.info0.TabIndex = 28;
+            this.info0.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.info0.UseVisualStyleBackColor = false;
+            this.info0.Click += new System.EventHandler(this.info0_Click);
+            // 
+            // info1
+            // 
+            this.info1.BackColor = System.Drawing.Color.Transparent;
+            this.info1.BackgroundImage = global::MarcuLicenta.Properties.Resources.info;
+            this.info1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.info1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.info1.ForeColor = System.Drawing.Color.Yellow;
+            this.info1.Location = new System.Drawing.Point(3, 294);
+            this.info1.Name = "info1";
+            this.info1.Size = new System.Drawing.Size(40, 40);
+            this.info1.TabIndex = 29;
+            this.info1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.info1.UseVisualStyleBackColor = false;
+            this.info1.Click += new System.EventHandler(this.info1_Click);
+            // 
+            // info2
+            // 
+            this.info2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.info2.BackColor = System.Drawing.Color.Transparent;
+            this.info2.BackgroundImage = global::MarcuLicenta.Properties.Resources.info;
+            this.info2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.info2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.info2.ForeColor = System.Drawing.Color.Yellow;
+            this.info2.Location = new System.Drawing.Point(3, 340);
+            this.info2.Name = "info2";
+            this.info2.Size = new System.Drawing.Size(40, 40);
+            this.info2.TabIndex = 30;
+            this.info2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.info2.UseVisualStyleBackColor = false;
+            this.info2.Click += new System.EventHandler(this.info2_Click);
+            // 
+            // info3
+            // 
+            this.info3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.info3.BackColor = System.Drawing.Color.Transparent;
+            this.info3.BackgroundImage = global::MarcuLicenta.Properties.Resources.info;
+            this.info3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.info3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.info3.ForeColor = System.Drawing.Color.Yellow;
+            this.info3.Location = new System.Drawing.Point(3, 574);
+            this.info3.Name = "info3";
+            this.info3.Size = new System.Drawing.Size(40, 40);
+            this.info3.TabIndex = 31;
+            this.info3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.info3.UseVisualStyleBackColor = false;
+            this.info3.Click += new System.EventHandler(this.info3_Click);
             // 
             // Form1
             // 
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.ForestGreen;
-            this.BackgroundImage = global::MarcuLicenta.Properties.Resources.gradient3;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1076, 672);
-            this.Controls.Add(this.button4);
+            this.ClientSize = new System.Drawing.Size(1034, 672);
+            this.Controls.Add(this.info3);
+            this.Controls.Add(this.info2);
+            this.Controls.Add(this.info1);
+            this.Controls.Add(this.info0);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.plotView2);
             this.Controls.Add(this.label4);
@@ -359,6 +427,7 @@
             this.Controls.Add(this.computeCoefficientsButton);
             this.Controls.Add(this.inputGridView);
             this.Controls.Add(this.openFileButton);
+            this.MinimumSize = new System.Drawing.Size(1050, 711);
             this.Name = "Form1";
             this.Text = "Modelarea, simularea si interpretarea dependentei 1F -1P";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -396,7 +465,10 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog2;
         private System.Windows.Forms.SaveFileDialog saveFileDialog3;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button info0;
+        private System.Windows.Forms.Button info1;
+        private System.Windows.Forms.Button info2;
+        private System.Windows.Forms.Button info3;
     }
 }
 

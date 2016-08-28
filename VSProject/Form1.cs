@@ -585,10 +585,7 @@ namespace WindowsFormsApplication1
             //  sumN0, sumN1, sumN2, sumN3, sumN4, sumFN0, sumFN1, sumFN2);
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private double det(double[,] a)
         {
@@ -636,6 +633,27 @@ namespace WindowsFormsApplication1
             saveFileDialog2.ShowDialog();
         }
 
+        private void info0_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void info1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void info2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void info3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             string fileName = saveFileDialog1.FileName;
@@ -657,5 +675,7 @@ namespace WindowsFormsApplication1
             excelDataSet.Tables.Add(inputDataset.Tables[inputTableName].Copy());
             CreateExcelFile.CreateExcelDocument(excelDataSet, fileName);
         }
+
+
     }
 }
