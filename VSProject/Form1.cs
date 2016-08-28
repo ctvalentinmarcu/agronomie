@@ -21,7 +21,7 @@ namespace WindowsFormsApplication1
             InitializeComponent();
         }
 
-        
+
 
         string delimiter = ",";
         string inputTableName = "inputTableName";
@@ -33,32 +33,32 @@ namespace WindowsFormsApplication1
         //int measurements = 0;
 
         double sumN0, sumN1, sumN2, sumN3, sumN4, sumFN0, sumFN1, sumFN2;
-       
+
         // A * X = B, where X = (c, b, a)
         double coefA, coefB, coefC;
 
         private void computeCoefficientsButton_Click(object sender, EventArgs e)
         {
-            computeCoefficients();            
+            computeCoefficients();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             inputDataset = new DataSet();
             inputDataset.Tables.Add(inputTableName);
- 
+
             inputDataset.Tables[inputTableName].Columns.Add("Doza");
             inputDataset.Tables[inputTableName].Columns.Add("Productie");
 
             BindingSource bs1 = new BindingSource();
             bs1.DataSource = inputDataset.Tables[inputTableName];
-            inputGridView.DataSource = bs1; 
+            inputGridView.DataSource = bs1;
         }
 
-       
-        
 
-        
+
+
+
 
         private void openFileButton_Click(object sender, EventArgs e)
         {
@@ -70,7 +70,7 @@ namespace WindowsFormsApplication1
             refreshInterpretation();
         }
 
-       
+
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -108,12 +108,12 @@ namespace WindowsFormsApplication1
                     //string s = parts[indexOfSize].Trim();
                     //measurements = int.Parse(s);
 
-                    for (int i = indexOfSize+1; i+1 < parts.Length; i+=2)
+                    for (int i = indexOfSize + 1; i + 1 < parts.Length; i += 2)
                     {
                         string s1 = parts[i].Trim();
-                        string s2 = parts[i+1].Trim();
-                        double N = double.Parse(s1,System.Globalization.NumberStyles.Number);                     
-                        double f = double.Parse(s2, System.Globalization.NumberStyles.Number);               
+                        string s2 = parts[i + 1].Trim();
+                        double N = double.Parse(s1, System.Globalization.NumberStyles.Number);
+                        double f = double.Parse(s2, System.Globalization.NumberStyles.Number);
 
                         //int currentMeasurement = (i - indexOfSize) / 2;
                         inputs.Add(N);
@@ -124,7 +124,7 @@ namespace WindowsFormsApplication1
                         row[1] = f;
                         inputDataset.Tables[inputTableName].Rows.Add(row);
                         //Console.WriteLine("Added {0} {1}", N, f);
-                    }                    
+                    }
                 }
             }
             fileStream.Close();
@@ -193,6 +193,7 @@ namespace WindowsFormsApplication1
             Xaxis.Minimum = 0;
             Xaxis.Position = OxyPlot.Axes.AxisPosition.Bottom;
             Xaxis.Title = "Doza aplicata (kgsa / ha)";
+            Xaxis.PositionAtZeroCrossing = true;
             model.Axes.Add(Xaxis);
 
             //Define Y-Axis
@@ -204,6 +205,7 @@ namespace WindowsFormsApplication1
             Yaxis.MinimumPadding = 0;
             //Yaxis.MinorStep = 5;
             Yaxis.Title = "Productie realizata (kg/ha)";
+
             model.Axes.Add(Yaxis);
 
             model.Series.Add(new FunctionSeries(x => coefC * x * x + coefB * x + coefA,
@@ -228,9 +230,9 @@ namespace WindowsFormsApplication1
 
         private void refreshPlot1()
         {
-            double py = (double) updownPretProdus.Value;
-            double pN = (double) updownPretFactor.Value;
-            double chF = (double) updownChFixe.Value;
+            double py = (double)updownPretProdus.Value;
+            double pN = (double)updownPretFactor.Value;
+            double chF = (double)updownChFixe.Value;
             //double trust = (double)updownMarja.Value;
 
             plotView1.Invalidate();
@@ -245,7 +247,7 @@ namespace WindowsFormsApplication1
             double maxTehnic = -coefB / (2 * coefC);
             double optimEconomic = (pN - coefB * py) / (2 * coefC * py);
             double pragRent = pragRentabilitate();
-            
+
             var model = new PlotModel
             {
                 Title = string.Format("pragRent = {0:0.#} kgsa, maxTehnic = {1:0.#} kgsa; optimEc = {2:0.#} kgsa;", pragRent, maxTehnic, optimEconomic),
@@ -260,6 +262,8 @@ namespace WindowsFormsApplication1
             Xaxis.Minimum = 0;
             Xaxis.Position = OxyPlot.Axes.AxisPosition.Bottom;
             Xaxis.Title = "Doza aplicata";
+            Xaxis.PositionAtZeroCrossing = true;
+            Xaxis.AxislineStyle = LineStyle.Dot;
             model.Axes.Add(Xaxis);
 
             //Define Y-Axis
@@ -273,43 +277,76 @@ namespace WindowsFormsApplication1
             Yaxis.Title = "Cheltuieli, Incasari, Profituri";
             model.Axes.Add(Yaxis);
 
-            
-            model.Series.Add(new FunctionSeries(x => F(x) * py,
-                0, lastX, 100, "Incasari"));
-            model.Series.Add(new FunctionSeries(x => x * pN + chF,
-                0, lastX, 100, "Cheltuieli"));
-            model.Series.Add(new FunctionSeries(x => F(x) * py - (x * pN + chF),
-                0, lastX, 100, "Profit"));
+            var f1 = new FunctionSeries(x => F(x) * py,
+                0, lastX, 100, "Incasari");
+            var f2 = new FunctionSeries(x => x * pN + chF,
+                0, lastX, 100, "Cheltuieli");
+            var f3 = new FunctionSeries(x => F(x) * py - (x * pN + chF),
+                0, lastX, 100, "Profit");
+
+            var f1Max = f1.Points.Max(p => p.Y);
+            var f1Min = f1.Points.Min(p => p.Y);
+            var f2Max = f2.Points.Max(p => p.Y);
+            var f2Min = f2.Points.Min(p => p.Y);
+            var f3Max = f3.Points.Max(p => p.Y);
+            var f3Min = f3.Points.Min(p => p.Y);
+
+            var minY = Math.Min(f1Min, Math.Min(f2Min, f3Min));
+            var maxY = Math.Max(f1Max, Math.Max(f2Max, f3Max));
+
+            model.Series.Add(f1);
+            model.Series.Add(f2);
+            model.Series.Add(f3);
 
             var discreteSeries = new StemSeries();
-            var maxTehnicPoint = new DataPoint(maxTehnic, F(maxTehnic)*py);
-            discreteSeries.Points.Add(maxTehnicPoint);
-            var maxTehnicPoint2 = new DataPoint(maxTehnic, maxTehnic*pN + chF);
-            discreteSeries.Points.Add(maxTehnicPoint2);
-            var maxTehnicPoint3 = new DataPoint(maxTehnic, F(maxTehnic) * py - (maxTehnic * pN + chF));
-            discreteSeries.Points.Add(maxTehnicPoint3);
+
+            //var maxTehnicPoint = new DataPoint(maxTehnic, F(maxTehnic)*py);
+            //discreteSeries.Points.Add(maxTehnicPoint);
+            //var maxTehnicPoint2 = new DataPoint(maxTehnic, maxTehnic*pN + chF);
+            //discreteSeries.Points.Add(maxTehnicPoint2);
+            //var maxTehnicPoint3 = new DataPoint(maxTehnic, F(maxTehnic) * py - (maxTehnic * pN + chF));
+            //discreteSeries.Points.Add(maxTehnicPoint3);
+
+            var maxTehnicPointMin = new DataPoint(maxTehnic, minY);
+            var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
+            discreteSeries.Points.Add(maxTehnicPointMin);
+            discreteSeries.Points.Add(maxTehnicPointMax);
+
             model.Series.Add(discreteSeries);
 
             var discreteSeries2 = new StemSeries();
-            var optEcPoint = new DataPoint(optimEconomic, F(optimEconomic)*py);
-            discreteSeries2.Points.Add(optEcPoint);
-            var optEcPoint2 = new DataPoint(optimEconomic, optimEconomic * pN + chF);
-            discreteSeries2.Points.Add(optEcPoint2);
-            var optEcPoint3 = new DataPoint(optimEconomic, F(optimEconomic) * py - (optimEconomic * pN + chF));
-            discreteSeries2.Points.Add(optEcPoint3);
+
+            //var optEcPoint = new DataPoint(optimEconomic, F(optimEconomic)*py);
+            //discreteSeries2.Points.Add(optEcPoint);
+            //var optEcPoint2 = new DataPoint(optimEconomic, optimEconomic * pN + chF);
+            //discreteSeries2.Points.Add(optEcPoint2);
+            //var optEcPoint3 = new DataPoint(optimEconomic, F(optimEconomic) * py - (optimEconomic * pN + chF));
+            //discreteSeries2.Points.Add(optEcPoint3);
+
+            var optEcPointMin = new DataPoint(optimEconomic, minY);
+            var optEcPointMax = new DataPoint(optimEconomic, maxY);
+            discreteSeries2.Points.Add(optEcPointMin);
+            discreteSeries2.Points.Add(optEcPointMax);
+
             model.Series.Add(discreteSeries2);
 
-
             var discreteSeries3 = new StemSeries();
-            var pragRentPoint = new DataPoint(pragRent, F(pragRent) * py);
-            discreteSeries3.Points.Add(pragRentPoint);
+
+            //var pragRentPoint = new DataPoint(pragRent, F(pragRent) * py);
+            //discreteSeries3.Points.Add(pragRentPoint);
+
+            var pragRentPointMin = new DataPoint(pragRent, minY);
+            var pragRentPointMax = new DataPoint(pragRent, maxY);
+            discreteSeries3.Points.Add(pragRentPointMin);
+            discreteSeries3.Points.Add(pragRentPointMax);
+
             model.Series.Add(discreteSeries3);
 
             plotView1.Model = model;
             plotView1.Refresh();
         }
 
-        
+
 
         private void refreshPlot2()
         {
@@ -344,6 +381,8 @@ namespace WindowsFormsApplication1
             Xaxis.Minimum = 0;
             Xaxis.Position = OxyPlot.Axes.AxisPosition.Bottom;
             Xaxis.Title = "Doza aplicata";
+            Xaxis.PositionAtZeroCrossing = true;
+            Xaxis.AxislineStyle = LineStyle.Dot;
             model.Axes.Add(Xaxis);
 
             //Define Y-Axis
@@ -355,33 +394,61 @@ namespace WindowsFormsApplication1
             Yaxis.MinimumPadding = 0;
             //Yaxis.MinorStep = 1;
             Yaxis.Title = "Valori marginale";
-           
+
             model.Axes.Add(Yaxis);
 
 
-            model.Series.Add(new FunctionSeries(x => Fd(x) * py,
-                0, lastX, 100, "Incasari marginale"));
-            model.Series.Add(new FunctionSeries(x => pN,
-                0, lastX, 100, "Cheltuieli marginale"));
-            model.Series.Add(new FunctionSeries(x => Fd(x) * py - pN,
-                0, lastX, 100, "Profit marginal"));
+            var f1 = new FunctionSeries(x => Fd(x) * py,
+                0, lastX, 100, "Incasari marginale");
+            var f1Max = f1.Points.Max(p => p.Y);
+            var f1Min = f1.Points.Min(p => p.Y);
+
+            var f2 = new FunctionSeries(x => pN,
+                0, lastX, 100, "Cheltuieli marginale");
+            var f2Max = f2.Points.Max(p => p.Y);
+            var f2Min = f2.Points.Min(p => p.Y);
+
+            var f3 = new FunctionSeries(x => Fd(x) * py - pN,
+                0, lastX, 100, "Profit marginal");
+            var f3Max = f3.Points.Max(p => p.Y);
+            var f3Min = f3.Points.Min(p => p.Y);
+
+            var minY = Math.Min(f1Min, Math.Min(f2Min, f3Min));
+            var maxY = Math.Max(f1Max, Math.Max(f2Max, f3Max));
+
+            model.Series.Add(f1);
+            model.Series.Add(f2);
+            model.Series.Add(f3);
 
             var discreteSeries = new StemSeries();
-            var maxTehnicPoint = new DataPoint(maxTehnic, Fd(maxTehnic) * py);
-            discreteSeries.Points.Add(maxTehnicPoint);
-            var maxTehnicPoint2 = new DataPoint(maxTehnic, pN);
-            discreteSeries.Points.Add(maxTehnicPoint2);
-            var maxTehnicPoint3 = new DataPoint(maxTehnic, Fd(maxTehnic) * py - pN);
-            discreteSeries.Points.Add(maxTehnicPoint3);
+
+            //var maxTehnicPoint = new DataPoint(maxTehnic, Fd(maxTehnic) * py);
+            //discreteSeries.Points.Add(maxTehnicPoint);
+            //var maxTehnicPoint2 = new DataPoint(maxTehnic, pN);
+            //discreteSeries.Points.Add(maxTehnicPoint2);
+            //var maxTehnicPoint3 = new DataPoint(maxTehnic, Fd(maxTehnic) * py - pN);
+            //discreteSeries.Points.Add(maxTehnicPoint3);
+
+            var maxTehnicPointMin = new DataPoint(maxTehnic, minY);
+            discreteSeries.Points.Add(maxTehnicPointMin);
+            var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
+            discreteSeries.Points.Add(maxTehnicPointMax);
             model.Series.Add(discreteSeries);
 
             var discreteSeries2 = new StemSeries();
-            var optEcPoint = new DataPoint(optimEconomic, Fd(optimEconomic) * py);
-            discreteSeries2.Points.Add(optEcPoint);
-            var optEcPoint2 = new DataPoint(optimEconomic, pN);
-            discreteSeries2.Points.Add(optEcPoint2);
-            var optEcPoint3 = new DataPoint(optimEconomic, Fd(optimEconomic) * py - pN);
-            discreteSeries2.Points.Add(optEcPoint3);
+
+            //var optEcPoint = new DataPoint(optimEconomic, Fd(optimEconomic) * py);
+            //discreteSeries2.Points.Add(optEcPoint);
+            //var optEcPoint2 = new DataPoint(optimEconomic, pN);
+            //discreteSeries2.Points.Add(optEcPoint2);
+            //var optEcPoint3 = new DataPoint(optimEconomic, Fd(optimEconomic) * py - pN);
+            //discreteSeries2.Points.Add(optEcPoint3);
+
+            var optEcPointMin = new DataPoint(optimEconomic, minY);
+            discreteSeries2.Points.Add(optEcPointMin);
+            var optEcPointMax = new DataPoint(optimEconomic, maxY);
+            discreteSeries2.Points.Add(optEcPointMax);
+
             model.Series.Add(discreteSeries2);
 
             plotView2.Model = model;
@@ -405,7 +472,7 @@ namespace WindowsFormsApplication1
             double med = outputs.Average();
             double sum1 = inputs.Select((n, i) => Math.Pow(F(n) - outputs[i], 2)).Sum();
             double sum2 = inputs.Select((n, i) => Math.Pow(med - outputs[i], 2)).Sum();
-            double coef = Math.Sqrt((sum2-sum1) / sum2);
+            double coef = Math.Sqrt((sum2 - sum1) / sum2);
             return coef;
         }
 
@@ -422,7 +489,7 @@ namespace WindowsFormsApplication1
             double b = coefB * py - pN;
             double c = coefC * py;
 
-            if(b * b - 4 * a * c < 0)
+            if (b * b - 4 * a * c < 0)
             {
                 return 0;
             }
@@ -443,9 +510,9 @@ namespace WindowsFormsApplication1
             sumN2 = inputs.Select(N => N * N).Sum();
             sumN3 = inputs.Select(N => N * N * N).Sum();
             sumN4 = inputs.Select(N => N * N * N * N).Sum();
-            
+
             sumFN0 = outputs.Sum();
-            sumFN1 = outputs.Select((f,i) => f * inputs[i]).Sum();
+            sumFN1 = outputs.Select((f, i) => f * inputs[i]).Sum();
             sumFN2 = outputs.Select((f, i) => f * inputs[i] * inputs[i]).Sum();
             //Console.WriteLine("Sums: {0} {1} {2} {3} {4} {5} {6} {7}", 
             //  sumN0, sumN1, sumN2, sumN3, sumN4, sumFN0, sumFN1, sumFN2);
@@ -456,7 +523,7 @@ namespace WindowsFormsApplication1
             double d =
                 (a[0, 2] * a[1, 1] * a[2, 0] + a[0, 0] * a[1, 2] * a[2, 1] + a[0, 1] * a[1, 0] * a[2, 2]) -
                 (a[0, 0] * a[1, 1] * a[2, 2] + a[0, 1] * a[1, 2] * a[2, 0] + a[0, 2] * a[1, 0] * a[2, 1]);
-            if(Math.Abs(d) < 0.001)
+            if (Math.Abs(d) < 0.001)
             {
                 d = 0.001;
             }
@@ -475,7 +542,7 @@ namespace WindowsFormsApplication1
         {
             double d =
                 (a[0, 2] * b[1] * a[2, 0] + a[0, 0] * a[1, 2] * b[2] + b[0] * a[1, 0] * a[2, 2]) -
-                (a[0, 0] * b[1] * a[2, 2] + b[0] * a[1, 2] * a[2, 0] + a[0, 2] * a[1, 0] * b[2]);            
+                (a[0, 0] * b[1] * a[2, 2] + b[0] * a[1, 2] * a[2, 0] + a[0, 2] * a[1, 0] * b[2]);
             return d;
         }
 
@@ -483,7 +550,7 @@ namespace WindowsFormsApplication1
         {
             double d =
                 (b[0] * a[1, 1] * a[2, 0] + a[0, 0] * b[1] * a[2, 1] + a[0, 1] * a[1, 0] * b[2]) -
-                (a[0, 0] * a[1, 1] * b[2] + a[0, 1] *b[1] * a[2, 0] + b[0] * a[1, 0] * a[2, 1]);
+                (a[0, 0] * a[1, 1] * b[2] + a[0, 1] * b[1] * a[2, 0] + b[0] * a[1, 0] * a[2, 1]);
             return d;
         }
 
