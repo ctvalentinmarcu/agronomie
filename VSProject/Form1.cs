@@ -13,6 +13,9 @@ using OxyPlot.Series;
 using OxyPlot.WindowsForms;
 
 using ExportToExcel;
+using System.Diagnostics;
+using MarcuLicenta;
+using System.IO;
 
 namespace WindowsFormsApplication1
 {
@@ -23,10 +26,29 @@ namespace WindowsFormsApplication1
             InitializeComponent();
         }
 
+        struct Results
+        {
+            public double coefA;
+            public double coefB;
+            public double coefC;
+            public double correlation;
+            public double Fcal;
+            public double f1;
+            public double f5;
+        }
 
+        struct Optim
+        {
+            public double pragRentabilitate;
+            public double maxTehnic;
+            public double optimEconomic;
+        }
+
+        Results results;
+        Optim optim;
 
         string delimiter = ",";
-        string inputTableName = "inputTableName";
+        string inputTableName = "Date initiale";
         DataSet inputDataset = new DataSet();
 
         int indexOfSize = 8; // this index indicates the number of measurements in file
@@ -38,6 +60,8 @@ namespace WindowsFormsApplication1
 
         // A * X = B, where X = (c, b, a)
         double coefA, coefB, coefC;
+
+        double highestN;
 
         private void computeCoefficientsButton_Click(object sender, EventArgs e)
         {
@@ -249,6 +273,10 @@ namespace WindowsFormsApplication1
             coefB = detX1(A, B) / det(A);
             coefA = detX0(A, B) / det(A);
 
+            results.coefA = coefA;
+            results.coefB = coefB;
+            results.coefC = coefC;
+
             //Console.WriteLine("Coefficients: c = {0:0.###}; b = {1:0.###}; a = {2:0.###}", coefC, coefB, coefA);
 
             plotFunction();
@@ -340,6 +368,10 @@ namespace WindowsFormsApplication1
             double optimEconomic = (pN - coefB * py) / (2 * coefC * py);
             double pragRent = pragRentabilitate();
 
+            optim.pragRentabilitate = pragRent;
+            optim.maxTehnic = maxTehnic;
+            optim.optimEconomic = optimEconomic;
+
             var model = new PlotModel
             {
                 Title = string.Format("pragRent = {0:0.#} kgsa, maxTehnic = {1:0.#} kgsa; optimEc = {2:0.#} kgsa;", pragRent, maxTehnic, optimEconomic),
@@ -369,13 +401,15 @@ namespace WindowsFormsApplication1
             Yaxis.Title = "Cheltuieli, Incasari, Profituri";
             model.Axes.Add(Yaxis);
 
+            highestN = lastX;
+
             var f1 = new FunctionSeries(x => F(x) * py,
                 0, lastX, 100, "Incasari");
             var f2 = new FunctionSeries(x => x * pN + chF,
                 0, lastX, 100, "Cheltuieli");
             var f3 = new FunctionSeries(x => F(x) * py - (x * pN + chF),
                 0, lastX, 100, "Profit");
-
+            
             var f1Max = f1.Points.Max(p => p.Y);
             var f1Min = f1.Points.Min(p => p.Y);
             var f2Max = f2.Points.Max(p => p.Y);
@@ -537,8 +571,25 @@ namespace WindowsFormsApplication1
             double med = outputs.Average();
             double sum1 = inputs.Select((n, i) => Math.Pow(F(n) - outputs[i], 2)).Sum();
             double sum2 = inputs.Select((n, i) => Math.Pow(med - outputs[i], 2)).Sum();
-            double coef = Math.Sqrt((sum2 - sum1) / sum2);
-            return coef;
+            double corelation = Math.Sqrt((sum2 - sum1) / sum2);
+
+            results.correlation = corelation;
+            if(inputs.Count > 3)
+            {
+                results.Fcal = 0.5 * (inputs.Count - 3) * (sum2 - sum1) / sum1;
+
+                double[] f1Values = new double[13] { 0, 0, 0, 30.82, 18, 13.27, 10.92, 9.55, 8.62, 8.02, 7.56, 7.2, 6.93 };
+                double[] f5Values = new double[13] { 0, 0, 0, 9.55, 6.94, 5.79, 5.14, 4.74, 4.46, 4.26, 4.10, 3.98, 3.88 };
+
+                int GL = inputs.Count - 1;
+                results.f1 = f1Values[GL];
+                results.f5 = f5Values[GL];
+            }
+
+            
+
+
+            return corelation;
         }
 
 
@@ -585,7 +636,9 @@ namespace WindowsFormsApplication1
             //  sumN0, sumN1, sumN2, sumN3, sumN4, sumFN0, sumFN1, sumFN2);
         }
 
-        
+
+
+        #region compute discriminants
 
         private double det(double[,] a)
         {
@@ -623,6 +676,50 @@ namespace WindowsFormsApplication1
             return d;
         }
 
+        #endregion
+
+
+
+        #region info PDF
+
+        private void info0_Click(object sender, EventArgs e)
+        {
+            string filename = "info0.pdf";
+            openPDF(filename);
+        }
+
+        private void info1_Click(object sender, EventArgs e)
+        {
+            string filename = "info1.pdf";
+            openPDF(filename);
+        }
+
+        private void info2_Click(object sender, EventArgs e)
+        {
+            string filename = "info2.pdf";
+            openPDF(filename);
+        }
+
+        private void info3_Click(object sender, EventArgs e)
+        {
+            string filename = "info3.pdf";
+            openPDF(filename);
+        }
+
+        private void openPDF(string filename)
+        {
+            WebViewForm web = new WebViewForm();
+            web.Text = filename;
+            string path = Path.GetFullPath(filename);
+            web.loadURL(path);
+            web.Show();
+        }
+
+        #endregion
+
+
+        #region export graphs to png
+
         private void plotView1_DoubleClick(object sender, EventArgs e)
         {
             saveFileDialog1.ShowDialog();
@@ -632,27 +729,6 @@ namespace WindowsFormsApplication1
         {
             saveFileDialog2.ShowDialog();
         }
-
-        private void info0_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void info1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void info2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void info3_Click(object sender, EventArgs e)
-        {
-
-        }
-
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
@@ -668,14 +744,156 @@ namespace WindowsFormsApplication1
             pngExporter.ExportToFile(plotView2.Model, fileName);
         }
 
+        #endregion
+
+
+        #region export statistics to Excel
+
         private void saveFileDialog3_FileOk(object sender, CancelEventArgs e)
         {
             string fileName = saveFileDialog3.FileName;
             DataSet excelDataSet = new DataSet();
+
             excelDataSet.Tables.Add(inputDataset.Tables[inputTableName].Copy());
+
+            DataTable resultsTable = new DataTable();
+            resultsTable.TableName = "Validare";
+            resultsTable.Columns.Add("coefA");
+            resultsTable.Columns.Add("coefB");
+            resultsTable.Columns.Add("coefC");
+            resultsTable.Columns.Add("Fcal");
+            resultsTable.Columns.Add("Corelatie");
+            resultsTable.Columns.Add("f 1%");
+            resultsTable.Columns.Add("f 5%");
+            DataRow row = resultsTable.NewRow();
+            row[0] = results.coefA;
+            row[1] = results.coefB;
+            row[2] = results.coefC;
+            row[3] = results.Fcal;
+            row[4] = results.correlation;
+            row[5] = results.f1;
+            row[6] = results.f5;
+            resultsTable.Rows.Add(row);            
+            excelDataSet.Tables.Add(resultsTable);
+
+            DataTable optimTable = new DataTable();
+            optimTable.TableName = "Valori de interes";
+            optimTable.Columns.Add("Tip");
+            optimTable.Columns.Add("Doza N (kgsa/ha)");
+            optimTable.Columns.Add("F(N) (kg/ha)");
+            DataRow optimRow1 = optimTable.NewRow();
+            optimRow1[0] = "Prag Rentabilitate";
+            optimRow1[1] = optim.pragRentabilitate;
+            optimRow1[2] = F(optim.pragRentabilitate);
+            optimTable.Rows.Add(optimRow1);
+            DataRow optimRow2 = optimTable.NewRow();
+            optimRow2[0] = "Maximum Tehnic";
+            optimRow2[1] = optim.maxTehnic;
+            optimRow2[2] = F(optim.maxTehnic);
+            optimTable.Rows.Add(optimRow2);
+            DataRow optimRow3 = optimTable.NewRow();
+            optimRow3[0] = "Optim Economic";
+            optimRow3[1] = optim.optimEconomic;
+            optimRow3[2] = F(optim.optimEconomic);
+            optimTable.Rows.Add(optimRow3);
+            excelDataSet.Tables.Add(optimTable);
+
+            DataTable pricesTable = new DataTable();
+            pricesTable.TableName = "Preturi de referinta";
+            pricesTable.Columns.Add("Tip");
+            pricesTable.Columns.Add("Valoare (lei)");
+            DataRow priceRow1 = pricesTable.NewRow();
+            priceRow1[0] = "Pret vanzare produs (lei/kg)";
+            priceRow1[1] = (double)updownPretProdus.Value;
+            pricesTable.Rows.Add(priceRow1);
+            DataRow priceRow2 = pricesTable.NewRow();
+            priceRow2[0] = "Pret achizitie factor (lei/kgsa)";
+            priceRow2[1] = (double)updownPretFactor.Value;
+            pricesTable.Rows.Add(priceRow2);
+            DataRow priceRow3 = pricesTable.NewRow();
+            priceRow3[0] = "Cheltuieli fixe (lei / ha)";
+            priceRow3[1] = (double)updownChFixe.Value;
+            pricesTable.Rows.Add(priceRow3);
+            excelDataSet.Tables.Add(pricesTable);
+
+            DataTable valuesTable = new DataTable();
+            valuesTable.TableName = "Rezultate economice";
+            valuesTable.Columns.Add("Doza aplicata (kgsa/ha)");
+            valuesTable.Columns.Add("Productie (kg/ha)");
+            valuesTable.Columns.Add("Cheltuieli (lei/ha)");
+            valuesTable.Columns.Add("Venituri (lei/ha)");
+            valuesTable.Columns.Add("Profit (lei/ha)");
+            valuesTable.Columns.Add("Cheltuieli marginale (lei/ha)");
+            valuesTable.Columns.Add("Venituri marginale (lei/ha)");
+            valuesTable.Columns.Add("Profit marginal (lei/ha)");
+            int step = 0;
+            for(step = 0; step <= highestN; step += 10)
+            {
+                DataRow r = valuesTable.NewRow();
+                r[0] = step;
+                r[1] = F(step);
+                r[2] = Cheltuieli(step);
+                r[3] = Incasari(step);
+                r[4] = Profit(step);
+                r[5] = CheltuieliMg(step);
+                r[6] = IncasariMg(step);
+                r[7] = ProfitMg(step);
+                valuesTable.Rows.Add(r);
+            }
+            excelDataSet.Tables.Add(valuesTable);
+
             CreateExcelFile.CreateExcelDocument(excelDataSet, fileName);
         }
 
+        //helpers
 
+        private double Incasari(double x)
+        {
+            double py = (double)updownPretProdus.Value;
+            double pN = (double)updownPretFactor.Value;
+            double chF = (double)updownChFixe.Value;
+
+            return F(x) * py;
+        }
+
+        private double Cheltuieli(double x)
+        {
+            double py = (double)updownPretProdus.Value;
+            double pN = (double)updownPretFactor.Value;
+            double chF = (double)updownChFixe.Value;
+
+            return x * pN + chF;
+        }
+
+        private double Profit(double x)
+        {
+            return Incasari(x) - Cheltuieli(x);
+        }
+
+
+        private double IncasariMg(double x)
+        {
+            double py = (double)updownPretProdus.Value;
+            double pN = (double)updownPretFactor.Value;
+            double chF = (double)updownChFixe.Value;
+
+            return Fd(x) * py;
+        }
+
+        private double CheltuieliMg(double x)
+        {
+            double py = (double)updownPretProdus.Value;
+            double pN = (double)updownPretFactor.Value;
+            double chF = (double)updownChFixe.Value;
+
+            return pN;
+        }
+
+        private double ProfitMg(double x)
+        {
+            return IncasariMg(x) - CheltuieliMg(x);
+        }
+
+        #endregion
     }
 }
