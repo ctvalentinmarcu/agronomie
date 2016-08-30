@@ -426,7 +426,7 @@ namespace WindowsFormsApplication1
 
             var discreteSeries = new StemSeries();
 
-            var maxTehnicPointMin = new DataPoint(maxTehnic, minY);
+            var maxTehnicPointMin = new DataPoint(maxTehnic, 0);
             var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
             discreteSeries.Points.Add(maxTehnicPointMin);
             discreteSeries.Points.Add(maxTehnicPointMax);
@@ -435,7 +435,7 @@ namespace WindowsFormsApplication1
 
             var discreteSeries2 = new StemSeries();
 
-            var optEcPointMin = new DataPoint(optimEconomic, minY);
+            var optEcPointMin = new DataPoint(optimEconomic, 0);
             var optEcPointMax = new DataPoint(optimEconomic, maxY);
             discreteSeries2.Points.Add(optEcPointMin);
             discreteSeries2.Points.Add(optEcPointMax);
@@ -447,7 +447,7 @@ namespace WindowsFormsApplication1
             //var pragRentPoint = new DataPoint(pragRent, F(pragRent) * py);
             //discreteSeries3.Points.Add(pragRentPoint);
 
-            var pragRentPointMin = new DataPoint(pragRent, minY);
+            var pragRentPointMin = new DataPoint(pragRent, 0);
             var pragRentPointMax = new DataPoint(pragRent, maxY);
             discreteSeries3.Points.Add(pragRentPointMin);
             discreteSeries3.Points.Add(pragRentPointMax);
@@ -534,7 +534,7 @@ namespace WindowsFormsApplication1
 
             var discreteSeries = new StemSeries();
 
-            var maxTehnicPointMin = new DataPoint(maxTehnic, minY);
+            var maxTehnicPointMin = new DataPoint(maxTehnic, 0);
             discreteSeries.Points.Add(maxTehnicPointMin);
             var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
             discreteSeries.Points.Add(maxTehnicPointMax);
@@ -543,7 +543,7 @@ namespace WindowsFormsApplication1
             var discreteSeries2 = new StemSeries();
 
 
-            var optEcPointMin = new DataPoint(optimEconomic, minY);
+            var optEcPointMin = new DataPoint(optimEconomic, 0);
             discreteSeries2.Points.Add(optEcPointMin);
             var optEcPointMax = new DataPoint(optimEconomic, maxY);
             discreteSeries2.Points.Add(optEcPointMax);
