@@ -35,6 +35,12 @@ namespace WindowsFormsApplication1
             public double Fcal;
             public double f1;
             public double f5;
+            public double stdDev; // abaterea
+            public double trust2; // p = 80%
+            public double trust1; // p = 90%
+            public double trust05; // p = 95%
+            public double trust01; // p = 99%
+            public double trust001; // p = 99.9%
         }
 
         struct Optim
@@ -295,10 +301,12 @@ namespace WindowsFormsApplication1
 
             double lastX = Math.Min(maxN, -coefB / coefC);
 
+            double corelation = computeCorelation();
+
             var model = new PlotModel
             {
-                Title = string.Format("F(N) = {0:0.###} * N^2  +  {1:0.###} * N  +  {2:0.###}", coefC, coefB, coefA, computeCorelation()),
-                Subtitle = string.Format("coeficient de corelatie = {0:0.###}", computeCorelation()),
+                Title = string.Format("F(N) = {0:0.###} * N^2  +  {1:0.###} * N  +  {2:0.###}", coefC, coefB, coefA, corelation),
+                Subtitle = string.Format("coeficient de corelatie = {0:0.###}", corelation),
                 PlotType = PlotType.XY,
                 Background = OxyColors.White
             };
@@ -324,8 +332,21 @@ namespace WindowsFormsApplication1
 
             model.Axes.Add(Yaxis);
 
-            model.Series.Add(new FunctionSeries(x => coefC * x * x + coefB * x + coefA,
+            model.Series.Add(new FunctionSeries(x => F(x),
                 0, lastX, 100, "Productie"));
+
+            double currentInterval = 200.0;
+            FunctionSeries fInf = new FunctionSeries(x => F(x) - currentInterval,
+                0, lastX, 100, "Limite incredere");
+            fInf.LineStyle = LineStyle.Dot;
+            model.Series.Add(fInf);
+
+            FunctionSeries fSup = new FunctionSeries(x => F(x) + currentInterval,
+                0, lastX, 100);
+            fSup.LineStyle = LineStyle.Dot;
+            fSup.BrokenLineColor = fInf.BrokenLineColor;
+            model.Series.Add(fSup);
+
 
             var discreteSeries = new StemSeries();
             foreach (double N in inputs)
