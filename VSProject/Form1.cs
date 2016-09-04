@@ -225,6 +225,8 @@ namespace WindowsFormsApplication1
                     //string s = parts[indexOfSize].Trim();
                     //measurements = int.Parse(s);
 
+                    inputDataset.Tables[inputTableName].Rows.Clear();
+
                     for (int i = indexOfSize + 1; i + 1 < parts.Length; i += 2)
                     {
                         string s1 = parts[i].Trim();

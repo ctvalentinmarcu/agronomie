@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.openFileButton = new System.Windows.Forms.Button();
             this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             this.inputGridView = new System.Windows.Forms.DataGridView();
@@ -51,11 +51,11 @@
             this.saveFileDialog3 = new System.Windows.Forms.SaveFileDialog();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.info3 = new System.Windows.Forms.Button();
             this.info2 = new System.Windows.Forms.Button();
             this.info1 = new System.Windows.Forms.Button();
@@ -77,7 +77,7 @@
             this.openFileButton.Name = "openFileButton";
             this.openFileButton.Size = new System.Drawing.Size(201, 28);
             this.openFileButton.TabIndex = 0;
-            this.openFileButton.Text = "Deschide fisier";
+            this.openFileButton.Text = "Deschide fișier";
             this.openFileButton.UseVisualStyleBackColor = false;
             this.openFileButton.Click += new System.EventHandler(this.openFileButton_Click);
             // 
@@ -89,37 +89,37 @@
             // inputGridView
             // 
             this.inputGridView.BackgroundColor = System.Drawing.Color.ForestGreen;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Yellow;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inputGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inputGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.inputGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.DarkGreen;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Yellow;
-            dataGridViewCellStyle8.Format = "N3";
-            dataGridViewCellStyle8.NullValue = null;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.inputGridView.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.DarkGreen;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle2.Format = "N3";
+            dataGridViewCellStyle2.NullValue = null;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.inputGridView.DefaultCellStyle = dataGridViewCellStyle2;
             this.inputGridView.GridColor = System.Drawing.Color.Yellow;
             this.inputGridView.Location = new System.Drawing.Point(48, 53);
             this.inputGridView.Name = "inputGridView";
             this.inputGridView.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Yellow;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inputGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inputGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.inputGridView.Size = new System.Drawing.Size(244, 234);
             this.inputGridView.TabIndex = 1;
             // 
@@ -135,7 +135,7 @@
             this.computeCoefficientsButton.Name = "computeCoefficientsButton";
             this.computeCoefficientsButton.Size = new System.Drawing.Size(270, 28);
             this.computeCoefficientsButton.TabIndex = 2;
-            this.computeCoefficientsButton.Text = "Pas 1: Calculeaza functia de productie";
+            this.computeCoefficientsButton.Text = "Pas 1: Calculează funcția de producție";
             this.computeCoefficientsButton.UseVisualStyleBackColor = false;
             this.computeCoefficientsButton.Click += new System.EventHandler(this.computeCoefficientsButton_Click);
             // 
@@ -166,7 +166,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(270, 28);
             this.button2.TabIndex = 4;
-            this.button2.Text = "Pas 2: Interpretarea economica";
+            this.button2.Text = "Pas 2: Interpretarea economică";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -180,7 +180,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(172, 16);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Pret vanzare produs (lei/kg)";
+            this.label1.Text = "Preț vânzare produs (lei/kg)";
             // 
             // updownPretProdus
             // 
@@ -244,7 +244,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(187, 16);
             this.label2.TabIndex = 20;
-            this.label2.Text = "Pret achizitie factor (lei / kg sa)";
+            this.label2.Text = "Preț achiziție factor (lei / kg sa)";
             // 
             // updownChFixe
             // 
@@ -292,8 +292,8 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(242, 54);
             this.label4.TabIndex = 24;
-            this.label4.Text = "Optional, dublu-clic pe fiecare grafic pentru exportare (format .png) in afara ap" +
-    "licatiei";
+            this.label4.Text = "Opțional, dublu-clic pe fiecare grafic pentru exportare (format .png) în afara ap" +
+    "licației";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // plotView2
@@ -340,7 +340,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(270, 28);
             this.button3.TabIndex = 27;
-            this.button3.Text = "Pas 3: Exporta statistici (Excel)";
+            this.button3.Text = "Pas 3: Exportă statistici (Excel)";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -358,40 +358,18 @@
             this.groupBox1.Size = new System.Drawing.Size(302, 54);
             this.groupBox1.TabIndex = 33;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Intervale de incredere";
+            this.groupBox1.Text = "Intervale de încredere";
             // 
-            // radioButton1
+            // radioButton5
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(32, 21);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(52, 20);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "80%";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(83, 21);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(52, 20);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "90%";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(134, 21);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(52, 20);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "95%";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Location = new System.Drawing.Point(236, 21);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(62, 20);
+            this.radioButton5.TabIndex = 4;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "99.9%";
+            this.radioButton5.UseVisualStyleBackColor = true;
             // 
             // radioButton4
             // 
@@ -404,16 +382,38 @@
             this.radioButton4.Text = "99%";
             this.radioButton4.UseVisualStyleBackColor = true;
             // 
-            // radioButton5
+            // radioButton3
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(236, 21);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(62, 20);
-            this.radioButton5.TabIndex = 4;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "99.9%";
-            this.radioButton5.UseVisualStyleBackColor = true;
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(134, 21);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(52, 20);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "95%";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(83, 21);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(52, 20);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "90%";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(32, 21);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(52, 20);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "80%";
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // info3
             // 
