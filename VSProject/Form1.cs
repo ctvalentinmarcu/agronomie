@@ -36,11 +36,11 @@ namespace WindowsFormsApplication1
             public double f1;
             public double f5;
             public double stdDev; // abaterea
-            public double trust2; // p = 80%
-            public double trust1; // p = 90%
-            public double trust05; // p = 95%
-            public double trust01; // p = 99%
-            public double trust001; // p = 99.9%
+            public double tp2; // p = 80%
+            public double tp1; // p = 90%
+            public double tp05; // p = 95%
+            public double tp01; // p = 99%
+            public double tp001; // p = 99.9%
         }
 
         struct Optim
@@ -185,6 +185,33 @@ namespace WindowsFormsApplication1
                 return;
             }
             saveFileDialog3.ShowDialog();
+        }
+
+
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            plotFunction();
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            plotFunction();
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            plotFunction();
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            plotFunction();
+        }
+
+        private void radioButton5_CheckedChanged(object sender, EventArgs e)
+        {
+            plotFunction();
         }
 
 
@@ -337,7 +364,9 @@ namespace WindowsFormsApplication1
             model.Series.Add(new FunctionSeries(x => F(x),
                 0, lastX, 100, "Productie"));
 
-            double currentInterval = 200.0;
+
+
+            double currentInterval = getCurrentDelta();
             FunctionSeries fInf = new FunctionSeries(x => F(x) - currentInterval,
                 0, lastX, 100, "Limite incredere");
             fInf.LineStyle = LineStyle.Dot;
@@ -359,6 +388,23 @@ namespace WindowsFormsApplication1
             model.Series.Add(discreteSeries);
             plotView1.Model = model;
             plotView1.Refresh();
+        }
+
+
+        private double getCurrentDelta()
+        {
+            double delta = 0;
+            double tp = results.tp2;
+
+            if (radioButton1.Checked) { tp = results.tp2; }
+            if (radioButton2.Checked) { tp = results.tp1; }
+            if (radioButton3.Checked) { tp = results.tp05; }
+            if (radioButton4.Checked) { tp = results.tp01; }
+            if (radioButton5.Checked) { tp = results.tp001; }
+
+            delta = tp * results.stdDev;
+
+            return delta;
         }
 
         private void refreshInterpretation()
@@ -595,9 +641,13 @@ namespace WindowsFormsApplication1
             double sum1 = inputs.Select((n, i) => Math.Pow(F(n) - outputs[i], 2)).Sum();
             double sum2 = inputs.Select((n, i) => Math.Pow(med - outputs[i], 2)).Sum();
             double corelation = Math.Sqrt((sum2 - sum1) / sum2);
-
+            
             results.correlation = corelation;
-            if(inputs.Count > 3)
+
+            int nn = outputs.Count;
+            results.stdDev = Math.Sqrt(sum2 / (nn*(nn-1)) );
+
+            if (inputs.Count > 3)
             {
                 results.Fcal = 0.5 * (inputs.Count - 3) * (sum2 - sum1) / sum1;
 
@@ -605,8 +655,27 @@ namespace WindowsFormsApplication1
                 double[] f5Values = new double[13] { 0, 0, 0, 9.55, 6.94, 5.79, 5.14, 4.74, 4.46, 4.26, 4.10, 3.98, 3.88 };
 
                 int GL = inputs.Count - 1;
-                results.f1 = f1Values[GL];
-                results.f5 = f5Values[GL];
+                results.f1 = f1Values[GL-1];
+                results.f5 = f5Values[GL-1];
+
+                
+                double[] tp2Values = new double[12] { 0, 0, 1.886, 1.638, 1.533, 1.476, 1.44, 1.415, 1.397, 1.383, 1.372, 1.363 };
+                double[] tp1Values = new double[12] { 0, 0, 2.92, 2.353, 2.132, 2.015, 1.943, 1.895, 1.86, 1.833, 1.812, 1.796 };
+                double[] tp05Values = new double[12] { 0, 0, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262, 2.228, 2.201 };
+                double[] tp01Values = new double[12] { 0, 0, 9.925, 5.841, 4.604, 4.032, 3.707, 3.499, 3.355, 3.25, 3.169, 3.106 };
+                double[] tp001Values = new double[12] { 0, 0, 31.598, 12.924, 8.61, 6.869, 5.959, 5.408, 5.041, 4.781, 4.587, 4.437 };
+
+                if(GL > 11)
+                {
+                    GL = 11;
+                }
+
+                results.tp2 = tp2Values[GL];
+                results.tp1 = tp1Values[GL];
+                results.tp05 = tp05Values[GL];
+                results.tp01 = tp01Values[GL];
+                results.tp001 = tp001Values[GL];
+
             }
 
             
@@ -753,6 +822,8 @@ namespace WindowsFormsApplication1
             saveFileDialog2.ShowDialog();
         }
 
+        
+
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             string fileName = saveFileDialog1.FileName;
@@ -788,6 +859,12 @@ namespace WindowsFormsApplication1
             resultsTable.Columns.Add("Corelatie");
             resultsTable.Columns.Add("f 1%");
             resultsTable.Columns.Add("f 5%");
+            resultsTable.Columns.Add("Abatere");
+            resultsTable.Columns.Add("tp 80%");
+            resultsTable.Columns.Add("tp 90%");
+            resultsTable.Columns.Add("tp 95%");
+            resultsTable.Columns.Add("tp 99%");
+            resultsTable.Columns.Add("tp 99.9%");
             DataRow row = resultsTable.NewRow();
             row[0] = results.coefA;
             row[1] = results.coefB;
@@ -796,6 +873,12 @@ namespace WindowsFormsApplication1
             row[4] = results.correlation;
             row[5] = results.f1;
             row[6] = results.f5;
+            row[7] = results.stdDev;
+            row[8] = results.tp2;
+            row[9] = results.tp1;
+            row[10] = results.tp05;
+            row[11] = results.tp01;
+            row[12] = results.tp001;
             resultsTable.Rows.Add(row);            
             excelDataSet.Tables.Add(resultsTable);
 
