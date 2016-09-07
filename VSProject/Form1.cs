@@ -192,26 +192,31 @@ namespace WindowsFormsApplication1
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             plotFunction();
+            plotFunction2();
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             plotFunction();
+            plotFunction2();
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             plotFunction();
+            plotFunction2();
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             plotFunction();
+            plotFunction2();
         }
 
         private void radioButton5_CheckedChanged(object sender, EventArgs e)
         {
             plotFunction();
+            plotFunction2();
         }
 
 
@@ -315,6 +320,7 @@ namespace WindowsFormsApplication1
             //Console.WriteLine("Coefficients: c = {0:0.###}; b = {1:0.###}; a = {2:0.###}", coefC, coefB, coefA);
 
             plotFunction();
+            plotFunction2();
         }
 
 
@@ -328,7 +334,8 @@ namespace WindowsFormsApplication1
             double N2 = (-coefB + radDelta) / (2 * coefC);
             double maxN = Math.Max(N1, N2);
 
-            double lastX = Math.Min(maxN, -coefB / coefC);
+            //double lastX = Math.Min(maxN, -coefB / coefC);
+            double lastX = Math.Max(maxN, (-coefB / 2*coefC)*1.2);
 
             double corelation = computeCorelation();
 
@@ -388,6 +395,101 @@ namespace WindowsFormsApplication1
             model.Series.Add(discreteSeries);
             plotView1.Model = model;
             plotView1.Refresh();
+        }
+
+
+        private void plotFunction2()
+        {
+            double py = (double)updownPretProdus.Value;
+            double pN = (double)updownPretFactor.Value;
+            double chF = (double)updownChFixe.Value;
+            //double trust = (double)updownMarja.Value;
+
+            plotView2.Invalidate();
+
+            double radDelta = Math.Sqrt(coefB * coefB - 4 * coefA * coefC);
+            double N1 = (-coefB - radDelta) / (2 * coefC);
+            double N2 = (-coefB + radDelta) / (2 * coefC);
+            double maxN = Math.Max(N1, N2);
+
+            double lastX = Math.Min(maxN, -coefB / coefC);
+
+            double maxTehnic = -coefB / (2 * coefC);
+            double optimEconomic = (pN - coefB * py) / (2 * coefC * py);
+
+            var model = new PlotModel
+            {
+                Title = "Productie marginala",
+                Subtitle = string.Format("pretProdus = {0:0.#} lei/kg; pretFactor = {1:0.#} lei/kg; ChFixe = {2:0} lei", py, pN, chF),
+                PlotType = PlotType.XY,
+                Background = OxyColors.White
+            };
+
+            // Define X-Axis
+            var Xaxis = new OxyPlot.Axes.LinearAxis();
+            Xaxis.Maximum = double.NaN;
+            Xaxis.Minimum = 0;
+            Xaxis.Position = OxyPlot.Axes.AxisPosition.Bottom;
+            Xaxis.Title = "Doza aplicata";
+            Xaxis.PositionAtZeroCrossing = true;
+            Xaxis.AxislineStyle = LineStyle.Dot;
+            model.Axes.Add(Xaxis);
+
+            //Define Y-Axis
+            var Yaxis = new OxyPlot.Axes.LinearAxis();
+            //Yaxis.MajorStep = 5;
+            Yaxis.Maximum = double.NaN;
+            Yaxis.MaximumPadding = 0;
+            Yaxis.Minimum = double.NaN;
+            Yaxis.MinimumPadding = 0;
+            //Yaxis.MinorStep = 1;
+            Yaxis.Title = "Valori marginale";
+
+            model.Axes.Add(Yaxis);
+
+
+            var f1 = new FunctionSeries(x => Fd(x),
+                0, lastX, 100, "Incasari marginale");
+            var f1Max = f1.Points.Max(p => p.Y);
+            var f1Min = f1.Points.Min(p => p.Y);
+
+            var f2 = new FunctionSeries(x => pN,
+                0, lastX, 100, "Cheltuieli marginale");
+            var f2Max = f2.Points.Max(p => p.Y);
+            var f2Min = f2.Points.Min(p => p.Y);
+
+            var f3 = new FunctionSeries(x => Fd(x) * py - pN,
+                0, lastX, 100, "Profit marginal");
+            var f3Max = f3.Points.Max(p => p.Y);
+            var f3Min = f3.Points.Min(p => p.Y);
+
+            var minY = Math.Min(f1Min, Math.Min(f2Min, f3Min));
+            var maxY = Math.Max(f1Max, Math.Max(f2Max, f3Max));
+
+            model.Series.Add(f1);
+            //model.Series.Add(f2);
+            //model.Series.Add(f3);
+
+            var discreteSeries = new StemSeries();
+
+            var maxTehnicPointMin = new DataPoint(maxTehnic, 0);
+            discreteSeries.Points.Add(maxTehnicPointMin);
+            var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
+            discreteSeries.Points.Add(maxTehnicPointMax);
+            model.Series.Add(discreteSeries);
+
+            var discreteSeries2 = new StemSeries();
+
+
+            var optEcPointMin = new DataPoint(optimEconomic, 0);
+            discreteSeries2.Points.Add(optEcPointMin);
+            var optEcPointMax = new DataPoint(optimEconomic, maxY);
+            discreteSeries2.Points.Add(optEcPointMax);
+
+            model.Series.Add(discreteSeries2);
+
+            plotView2.Model = model;
+            plotView2.Refresh();
         }
 
 
