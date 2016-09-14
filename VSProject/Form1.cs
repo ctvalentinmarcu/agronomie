@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using OxyPlot;
 using OxyPlot.Series;
+using OxyPlot.Annotations;
 using OxyPlot.WindowsForms;
 
 using ExportToExcel;
@@ -36,6 +37,8 @@ namespace WindowsFormsApplication1
             public double f1;
             public double f5;
             public double stdDev; // abaterea
+            public double tp4; // p = 60%
+            public double tp3; // p = 70%
             public double tp2; // p = 80%
             public double tp1; // p = 90%
             public double tp05; // p = 95%
@@ -335,18 +338,20 @@ namespace WindowsFormsApplication1
             double maxN = Math.Max(N1, N2);
 
             //double lastX = Math.Min(maxN, -coefB / coefC);
-            double lastX = Math.Max(maxN, (-coefB / 2*coefC)*1.2);
+            double lastX = Math.Max(inputs.Max(), (-coefB / 2*coefC)*1.2);
 
             double corelation = computeCorelation();
+            int probability = getCurrentProbability();
 
             var model = new PlotModel
             {
-                Title = string.Format("F(N) = {0:0.###} * N^2  +  {1:0.###} * N  +  {2:0.###}", coefC, coefB, coefA, corelation),
-                Subtitle = string.Format("coeficient de corelatie = {0:0.###}", corelation),
+                Title = string.Format("F(N) = {0:0.####} * N^2  +  {1:0.##} * N  +  {2:0.##}", coefC, coefB, coefA),
+                Subtitle = string.Format("(coeficient de corelatie = {0:0.###}) (probabilitate = {1:0.##}%)", corelation, probability),
                 PlotType = PlotType.XY,
                 Background = OxyColors.White
             };
-
+            
+            
             // Define X-Axis
             var Xaxis = new OxyPlot.Axes.LinearAxis();
             Xaxis.Maximum = double.NaN;
@@ -368,23 +373,70 @@ namespace WindowsFormsApplication1
 
             model.Axes.Add(Yaxis);
 
-            model.Series.Add(new FunctionSeries(x => F(x),
-                0, lastX, 100, "Productie"));
+            FunctionSeries fSeries = new FunctionSeries(x => F(x),
+                0, lastX, 100, "Productie ajustata");
+           
 
 
 
             double currentInterval = getCurrentDelta();
             FunctionSeries fInf = new FunctionSeries(x => F(x) - currentInterval,
-                0, lastX, 100, "Limite incredere");
+                0, lastX, 100, "Prod ajustată lim inf");
             fInf.LineStyle = LineStyle.Dot;
-            model.Series.Add(fInf);
+            //fInf.TrackerFormatString = "{0}" + Environment.NewLine + "Doza = " + "{2:0.##}" + Environment.NewLine + "P Tot = " + "{4:0.##}";
+            
 
             FunctionSeries fSup = new FunctionSeries(x => F(x) + currentInterval,
-                0, lastX, 100);
+                0, lastX, 100, "Prod ajustată lim sup");
             fSup.LineStyle = LineStyle.Dot;
             fSup.BrokenLineColor = fInf.BrokenLineColor;
-            model.Series.Add(fSup);
 
+            fSup.TrackerFormatString = "{0}" + Environment.NewLine + "Doza = " + "{2:0.##}" + Environment.NewLine + "P Tot = " + "{4:0.##}";
+
+           
+
+            string pattern = @"Productia ajustata
+Doza = {0:0.##}
+FTot = {1:0.##}
+FTot (sup) = {2:0.##}
+FTot (inf) = {3:0.##}";
+            string pattern2 = "Productia ajustata \n Doza = {0:0.##} \n FTot = {1:0.##} \n FTot (sup) = {2:0.##} \n FTot (inf) = {3:0.##}";
+
+            EventHandler<OxyMouseDownEventArgs> mouseDownHandler = (s, e) =>
+            {
+                double x = (s as LineSeries).InverseTransform(e.Position).X;
+                double f = F(x);
+                double f1 = F(x) + currentInterval;
+                double f2 = F(x) - currentInterval;
+                fSeries.TrackerFormatString = String.Format(pattern2, x, f, f1, f2);
+                fSup.TrackerFormatString = String.Format(pattern2, x, f, f1, f2);
+                fInf.TrackerFormatString = String.Format(pattern2, x, f, f1, f2);
+            };
+
+            EventHandler<OxyMouseEventArgs> mouseMoveHandler = (s, e) =>
+            {
+                double x = (s as LineSeries).InverseTransform(e.Position).X;
+                double f = F(x);
+                double f1 = F(x) - currentInterval;
+                double f2 = F(x) - currentInterval;
+                fSeries.TrackerFormatString = String.Format(pattern2, x, f, f1, f2);
+                fSup.TrackerFormatString = String.Format(pattern2, x, f, f1, f2);
+                fInf.TrackerFormatString = String.Format(pattern2, x, f, f1, f2);
+            };
+
+            //fSeries.MouseDown += mouseDownHandler;
+            //fSeries.MouseMove += mouseMoveHandler;
+
+            //fSup.MouseDown += mouseDownHandler;
+            //fSup.MouseMove += mouseMoveHandler;
+
+            //fInf.MouseDown += mouseDownHandler;
+            //fInf.MouseMove += mouseMoveHandler;
+
+            model.Series.Add(fSeries);
+            model.Series.Add(fSup);
+            model.Series.Add(fInf);
+            
 
             var discreteSeries = new StemSeries();
             foreach (double N in inputs)
@@ -393,9 +445,41 @@ namespace WindowsFormsApplication1
                 discreteSeries.Points.Add(point);
             }
             model.Series.Add(discreteSeries);
+
+
+            var maxTehnicSeries = new StemSeries();
+            double maxTehnic = -coefB / (2 * coefC);
+            var maxTehnicPoint = new DataPoint(maxTehnic, F(maxTehnic));
+            maxTehnicSeries.Points.Add(maxTehnicPoint);
+            maxTehnicSeries.StrokeThickness = 5;
+            maxTehnicSeries.Color = OxyColor.FromRgb(0, 255, 0);
+            maxTehnicSeries.RenderInLegend = true;
+            model.Series.Add(maxTehnicSeries);
+
+
+            var maxTehnicSeries2 = new StemSeries();
+            var maxTehnicPoint2 = new DataPoint(maxTehnic*1.2, F(maxTehnic*1.2));
+            maxTehnicSeries2.Points.Add(maxTehnicPoint2);
+            //maxTehnicSeries2.StrokeThickness = 1;
+            maxTehnicSeries2.LineStyle = LineStyle.Dot;
+            maxTehnicSeries2.Color = OxyColor.FromRgb(0, 255, 0);
+            maxTehnicSeries2.RenderInLegend = true;
+            model.Series.Add(maxTehnicSeries2);
+
+
+            foreach (var series in model.Series)
+            {
+                series.MouseDown += mouseDownHandler;
+                series.MouseMove += mouseMoveHandler;
+            }
+
+            model.LegendPlacement = LegendPlacement.Inside;
+            model.LegendPosition = LegendPosition.LeftTop;
             plotView1.Model = model;
             plotView1.Refresh();
         }
+
+
 
 
         private void plotFunction2()
@@ -412,7 +496,8 @@ namespace WindowsFormsApplication1
             double N2 = (-coefB + radDelta) / (2 * coefC);
             double maxN = Math.Max(N1, N2);
 
-            double lastX = Math.Min(maxN, -coefB / coefC);
+            //double lastX = Math.Min(maxN, -coefB / coefC);
+            double lastX = Math.Max(inputs.Max(), (-coefB / 2 * coefC) * 1.2);
 
             double maxTehnic = -coefB / (2 * coefC);
             double optimEconomic = (pN - coefB * py) / (2 * coefC * py);
@@ -420,7 +505,7 @@ namespace WindowsFormsApplication1
             var model = new PlotModel
             {
                 Title = "Productie marginala",
-                Subtitle = string.Format("pretProdus = {0:0.#} lei/kg; pretFactor = {1:0.#} lei/kg; ChFixe = {2:0} lei", py, pN, chF),
+                //Subtitle = string.Format("pretProdus = {0:0.#} lei/kg; pretFactor = {1:0.#} lei/kg; ChFixe = {2:0} lei", py, pN, chF),
                 PlotType = PlotType.XY,
                 Background = OxyColors.White
             };
@@ -449,7 +534,7 @@ namespace WindowsFormsApplication1
 
 
             var f1 = new FunctionSeries(x => Fd(x),
-                0, lastX, 100, "Incasari marginale");
+                0, lastX, 100, "Productia marginala");
             var f1Max = f1.Points.Max(p => p.Y);
             var f1Min = f1.Points.Min(p => p.Y);
 
@@ -466,6 +551,7 @@ namespace WindowsFormsApplication1
             var minY = Math.Min(f1Min, Math.Min(f2Min, f3Min));
             var maxY = Math.Max(f1Max, Math.Max(f2Max, f3Max));
 
+            f1.TrackerFormatString = "{0}" + Environment.NewLine + "Doza = " + "{2:0.##}" + Environment.NewLine + "PM = " + "{4:0.##}";
             model.Series.Add(f1);
             //model.Series.Add(f2);
             //model.Series.Add(f3);
@@ -481,28 +567,36 @@ namespace WindowsFormsApplication1
             var discreteSeries2 = new StemSeries();
 
 
-            var optEcPointMin = new DataPoint(optimEconomic, 0);
-            discreteSeries2.Points.Add(optEcPointMin);
-            var optEcPointMax = new DataPoint(optimEconomic, maxY);
-            discreteSeries2.Points.Add(optEcPointMax);
 
-            model.Series.Add(discreteSeries2);
-
+            model.LegendPlacement = LegendPlacement.Inside;
             plotView2.Model = model;
             plotView2.Refresh();
         }
 
+
+        private int getCurrentProbability()
+        {
+            int p = 60;
+
+            if (radioButton1.Checked) { p = 60; }
+            if (radioButton2.Checked) { p = 70; }
+            if (radioButton3.Checked) { p = 80; }
+            if (radioButton4.Checked) { p = 90; }
+            if (radioButton5.Checked) { p = 95; }
+
+            return p;
+        }
 
         private double getCurrentDelta()
         {
             double delta = 0;
             double tp = results.tp2;
 
-            if (radioButton1.Checked) { tp = results.tp2; }
-            if (radioButton2.Checked) { tp = results.tp1; }
-            if (radioButton3.Checked) { tp = results.tp05; }
-            if (radioButton4.Checked) { tp = results.tp01; }
-            if (radioButton5.Checked) { tp = results.tp001; }
+            if (radioButton1.Checked) { tp = results.tp4; }
+            if (radioButton2.Checked) { tp = results.tp3; }
+            if (radioButton3.Checked) { tp = results.tp2; }
+            if (radioButton4.Checked) { tp = results.tp1; }
+            if (radioButton5.Checked) { tp = results.tp05; }
 
             delta = tp * results.stdDev;
 
@@ -533,7 +627,8 @@ namespace WindowsFormsApplication1
             double N2 = (-coefB + radDelta) / (2 * coefC);
             double maxN = Math.Max(N1, N2);
 
-            double lastX = Math.Min(maxN, -coefB / coefC);
+            //double lastX = Math.Min(maxN, -coefB / coefC);
+            double lastX = Math.Max(inputs.Max(), (-coefB / 2 * coefC) * 1.2);
 
             double maxTehnic = -coefB / (2 * coefC);
             double optimEconomic = (pN - coefB * py) / (2 * coefC * py);
@@ -545,8 +640,8 @@ namespace WindowsFormsApplication1
 
             var model = new PlotModel
             {
-                Title = string.Format("pragRent = {0:0.#} kgsa, maxTehnic = {1:0.#} kgsa; optimEc = {2:0.#} kgsa;", pragRent, maxTehnic, optimEconomic),
-                Subtitle = string.Format("pretProdus = {0:0.#} lei/kg; pretFactor = {1:0.#} lei/kg; ChFixe = {2:0} lei", py, pN, chF),
+                Subtitle = string.Format("Doze: Prag rent = {0:0.#} kgsa/ha; MaxTehnic = {1:0.#} kgsa/ha; Optim Ec = {2:0.#} kgsa/ha;", pragRent, maxTehnic, optimEconomic),
+                Title = string.Format("Pret produs = {0:0.#} lei/kg; Cost factor = {1:0.#} lei/kgsa; ChFixe = {2:0} lei/ha", py, pN, chF),
                 PlotType = PlotType.XY,
                 Background = OxyColors.White
             };
@@ -577,10 +672,12 @@ namespace WindowsFormsApplication1
             var f1 = new FunctionSeries(x => F(x) * py,
                 0, lastX, 100, "Incasari");
             var f2 = new FunctionSeries(x => x * pN + chF,
-                0, lastX, 100, "Cheltuieli");
+                0, lastX, 100, "Ch Totale");
             var f3 = new FunctionSeries(x => F(x) * py - (x * pN + chF),
-                0, lastX, 100, "Profit");
-            
+                0, lastX, 100, "B Total");
+            var f4 = new FunctionSeries(x => chF,
+                0, lastX, 100, "Ch Fixe");
+
             var f1Max = f1.Points.Max(p => p.Y);
             var f1Min = f1.Points.Min(p => p.Y);
             var f2Max = f2.Points.Max(p => p.Y);
@@ -594,6 +691,40 @@ namespace WindowsFormsApplication1
             model.Series.Add(f1);
             model.Series.Add(f2);
             model.Series.Add(f3);
+            model.Series.Add(f4);
+
+            string pattern2 = " Doza = {0:0.##} \n PTV = {1:0.##} \n Ch Tot = {2:0.##} \n B Tot = {3:0.##}";
+
+            EventHandler<OxyMouseDownEventArgs> mouseDownHandler = (s, e) =>
+            {
+                double x = (s as LineSeries).InverseTransform(e.Position).X;
+                double v1 = F(x) * py;
+                double v2 = x * pN + chF;
+                double v3 = F(x) * py - (x * pN + chF);
+                f1.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f2.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f3.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f4.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+            };
+
+            EventHandler<OxyMouseEventArgs> mouseMoveHandler = (s, e) =>
+            {
+                double x = (s as LineSeries).InverseTransform(e.Position).X;
+                double v1 = F(x) * py;
+                double v2 = x * pN + chF;
+                double v3 = F(x) * py - (x * pN + chF);
+                f1.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f2.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f3.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+            };
+
+
+            foreach (var series in model.Series)
+            {
+                series.MouseDown += mouseDownHandler;
+                series.MouseMove += mouseMoveHandler;
+            }
+
 
             var discreteSeries = new StemSeries();
 
@@ -601,6 +732,8 @@ namespace WindowsFormsApplication1
             var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
             discreteSeries.Points.Add(maxTehnicPointMin);
             discreteSeries.Points.Add(maxTehnicPointMax);
+            discreteSeries.StrokeThickness = 3.0;
+            discreteSeries.Color = OxyColors.ForestGreen;
 
             model.Series.Add(discreteSeries);
 
@@ -610,6 +743,8 @@ namespace WindowsFormsApplication1
             var optEcPointMax = new DataPoint(optimEconomic, maxY);
             discreteSeries2.Points.Add(optEcPointMin);
             discreteSeries2.Points.Add(optEcPointMax);
+            discreteSeries2.StrokeThickness = 5.0;
+            discreteSeries2.Color = OxyColors.DarkBlue;
 
             model.Series.Add(discreteSeries2);
 
@@ -622,14 +757,34 @@ namespace WindowsFormsApplication1
             var pragRentPointMax = new DataPoint(pragRent, maxY);
             discreteSeries3.Points.Add(pragRentPointMin);
             discreteSeries3.Points.Add(pragRentPointMax);
+            discreteSeries3.StrokeThickness = 3.0;
+            discreteSeries3.Color = OxyColors.YellowGreen;
 
             model.Series.Add(discreteSeries3);
 
+            var annotation = new FunctionAnnotation() { MinimumX = 0, MaximumX = 100, MinimumY = 0, MaximumY = 100 };
+            
+            model.Annotations.Add(annotation);
+
+            foreach(var series in model.Series)
+            {
+                series.MouseDown += (s, e) =>
+                {
+                    annotation.Text = "{2}";
+                    
+                };
+            }
+
+            model.LegendPlacement = LegendPlacement.Inside;
+            model.LegendPosition = LegendPosition.LeftTop;
             plotView1.Model = model;
             plotView1.Refresh();
         }
 
-
+        private void Series_MouseDown(object sender, OxyMouseDownEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         private void refreshPlot2()
         {
@@ -645,15 +800,16 @@ namespace WindowsFormsApplication1
             double N2 = (-coefB + radDelta) / (2 * coefC);
             double maxN = Math.Max(N1, N2);
 
-            double lastX = Math.Min(maxN, -coefB / coefC);
+            //double lastX = Math.Min(maxN, -coefB / coefC);
+            double lastX = Math.Max(inputs.Max(), (-coefB / 2 * coefC) * 1.2);
 
             double maxTehnic = -coefB / (2 * coefC);
             double optimEconomic = (pN - coefB * py) / (2 * coefC * py);
 
             var model = new PlotModel
             {
-                Title = "Cheltuieli, Incasari si Profituri marginale",
-                Subtitle = string.Format("pretProdus = {0:0.#} lei/kg; pretFactor = {1:0.#} lei/kg; ChFixe = {2:0} lei", py, pN, chF),
+                Title = "Venituri, cheltuieli si beneficii marginale",
+                //Subtitle = string.Format("PMV = {0:0.##} lei/kg; CM = {1:0.##} lei/kgsa; BM = {2:0.##} lei/kg", py, pN, py-pN),
                 PlotType = PlotType.XY,
                 Background = OxyColors.White
             };
@@ -663,7 +819,7 @@ namespace WindowsFormsApplication1
             Xaxis.Maximum = double.NaN;
             Xaxis.Minimum = 0;
             Xaxis.Position = OxyPlot.Axes.AxisPosition.Bottom;
-            Xaxis.Title = "Doza aplicata";
+            Xaxis.Title = "Doza (kg/ha)";
             Xaxis.PositionAtZeroCrossing = true;
             Xaxis.AxislineStyle = LineStyle.Dot;
             model.Axes.Add(Xaxis);
@@ -676,7 +832,7 @@ namespace WindowsFormsApplication1
             Yaxis.Minimum = double.NaN;
             Yaxis.MinimumPadding = 0;
             //Yaxis.MinorStep = 1;
-            Yaxis.Title = "Valori marginale";
+            Yaxis.Title = "Valoare";
 
             model.Axes.Add(Yaxis);
 
@@ -692,7 +848,7 @@ namespace WindowsFormsApplication1
             var f2Min = f2.Points.Min(p => p.Y);
 
             var f3 = new FunctionSeries(x => Fd(x) * py - pN,
-                0, lastX, 100, "Profit marginal");
+                0, lastX, 100, "Beneficiu marginal");
             var f3Max = f3.Points.Max(p => p.Y);
             var f3Min = f3.Points.Min(p => p.Y);
 
@@ -703,12 +859,46 @@ namespace WindowsFormsApplication1
             model.Series.Add(f2);
             model.Series.Add(f3);
 
+            string pattern2 = " Doza = {0:0.##} \n PMV = {1:0.##} \n CM = {2:0.##} \n BM = {3:0.##}";
+
+            EventHandler<OxyMouseDownEventArgs> mouseDownHandler = (s, e) =>
+            {
+                double x = (s as LineSeries).InverseTransform(e.Position).X;
+                double v1 = Fd(x) * py;
+                double v2 = pN;
+                double v3 = Fd(x) * py - pN;
+                f1.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f2.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f3.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+            };
+
+            EventHandler<OxyMouseEventArgs> mouseMoveHandler = (s, e) =>
+            {
+                double x = (s as LineSeries).InverseTransform(e.Position).X;
+                double v1 = F(x) * py;
+                double v2 = x * pN + chF;
+                double v3 = F(x) * py - (x * pN + chF);
+                f1.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f2.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+                f3.TrackerFormatString = String.Format(pattern2, x, v1, v2, v3);
+            };
+
+
+            foreach (var series in model.Series)
+            {
+                series.MouseDown += mouseDownHandler;
+                series.MouseMove += mouseMoveHandler;
+            }
+
             var discreteSeries = new StemSeries();
 
             var maxTehnicPointMin = new DataPoint(maxTehnic, 0);
             discreteSeries.Points.Add(maxTehnicPointMin);
             var maxTehnicPointMax = new DataPoint(maxTehnic, maxY);
             discreteSeries.Points.Add(maxTehnicPointMax);
+            discreteSeries.StrokeThickness = 3.0;
+            discreteSeries.Color = OxyColors.ForestGreen;
+
             model.Series.Add(discreteSeries);
 
             var discreteSeries2 = new StemSeries();
@@ -718,15 +908,19 @@ namespace WindowsFormsApplication1
             discreteSeries2.Points.Add(optEcPointMin);
             var optEcPointMax = new DataPoint(optimEconomic, maxY);
             discreteSeries2.Points.Add(optEcPointMax);
+            discreteSeries2.StrokeThickness = 5.0;
+            discreteSeries2.Color = OxyColors.DarkBlue;
 
             model.Series.Add(discreteSeries2);
 
+            model.LegendPlacement = LegendPlacement.Inside;
+            model.LegendPosition = LegendPosition.RightTop;
             plotView2.Model = model;
             plotView2.Refresh();
         }
 
 
-        private double F(double N)
+        public double F(double N)
         {
             return coefA + coefB * N + coefC * N * N;
         }
@@ -760,7 +954,8 @@ namespace WindowsFormsApplication1
                 results.f1 = f1Values[GL-1];
                 results.f5 = f5Values[GL-1];
 
-                
+                double[] tp4Values = new double[12] { 0, 0, 1.061, 0.978, 0.941, 0.920, 0.906, 0.896, 0.889, 0.883, 0.879, 0.876 };
+                double[] tp3Values = new double[12] { 0, 0, 1.386, 1.250, 1.190, 1.156, 1.134, 1.119, 1.108, 1.100, 1.093, 1.088 };
                 double[] tp2Values = new double[12] { 0, 0, 1.886, 1.638, 1.533, 1.476, 1.44, 1.415, 1.397, 1.383, 1.372, 1.363 };
                 double[] tp1Values = new double[12] { 0, 0, 2.92, 2.353, 2.132, 2.015, 1.943, 1.895, 1.86, 1.833, 1.812, 1.796 };
                 double[] tp05Values = new double[12] { 0, 0, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262, 2.228, 2.201 };
@@ -771,7 +966,8 @@ namespace WindowsFormsApplication1
                 {
                     GL = 11;
                 }
-
+                results.tp4 = tp4Values[GL];
+                results.tp3 = tp3Values[GL];
                 results.tp2 = tp2Values[GL];
                 results.tp1 = tp1Values[GL];
                 results.tp05 = tp05Values[GL];
@@ -962,27 +1158,52 @@ namespace WindowsFormsApplication1
             resultsTable.Columns.Add("f 1%");
             resultsTable.Columns.Add("f 5%");
             resultsTable.Columns.Add("Abatere");
+            resultsTable.Columns.Add("tp 60%");
+            resultsTable.Columns.Add("tp 70%");
             resultsTable.Columns.Add("tp 80%");
             resultsTable.Columns.Add("tp 90%");
             resultsTable.Columns.Add("tp 95%");
-            resultsTable.Columns.Add("tp 99%");
-            resultsTable.Columns.Add("tp 99.9%");
             DataRow row = resultsTable.NewRow();
-            row[0] = results.coefA;
-            row[1] = results.coefB;
-            row[2] = results.coefC;
-            row[3] = results.Fcal;
-            row[4] = results.correlation;
-            row[5] = results.f1;
-            row[6] = results.f5;
-            row[7] = results.stdDev;
-            row[8] = results.tp2;
-            row[9] = results.tp1;
-            row[10] = results.tp05;
-            row[11] = results.tp01;
-            row[12] = results.tp001;
+            row[0] = results.coefA.ToString("#.##");
+            row[1] = results.coefB.ToString("#.##");
+            row[2] = results.coefC.ToString("#.####");
+            row[3] = results.Fcal.ToString("#.####");
+            row[4] = results.correlation.ToString("#.##");
+            row[5] = results.f1.ToString("#.##");
+            row[6] = results.f5.ToString("#.##");
+            row[7] = results.stdDev.ToString("#.##");
+            row[8] = results.tp4.ToString("#.##");
+            row[9] = results.tp3.ToString("#.##");
+            row[10] = results.tp2.ToString("#.##");
+            row[11] = results.tp1.ToString("#.##");
+            row[12] = results.tp05.ToString("#.##");
             resultsTable.Rows.Add(row);            
             excelDataSet.Tables.Add(resultsTable);
+
+
+            DataTable adjustmentTable = new DataTable();
+            adjustmentTable.TableName = String.Format("Ajustare({0}%)",getCurrentProbability());
+            adjustmentTable.Columns.Add("Doza");
+            adjustmentTable.Columns.Add("FTot Masurat");
+            adjustmentTable.Columns.Add("FTot Ajustat");
+            adjustmentTable.Columns.Add("FTot min");
+            adjustmentTable.Columns.Add("FTot max");
+            for (int i=0; i<inputs.Count; i++)
+            {
+                double x = inputs[i];
+                double interval = getCurrentDelta();
+                
+                DataRow adjustmentRow = adjustmentTable.NewRow();
+                adjustmentRow[0] = x.ToString("#.###");
+                adjustmentRow[1] = outputs[i].ToString("#.##");
+                adjustmentRow[2] = F(x).ToString("#.##");
+                adjustmentRow[3] = (F(x) - interval).ToString("#.##");
+                adjustmentRow[4] = (F(x) + interval).ToString("#.##");
+                adjustmentTable.Rows.Add(adjustmentRow);
+            }    
+            
+            excelDataSet.Tables.Add(adjustmentTable);
+
 
             DataTable optimTable = new DataTable();
             optimTable.TableName = "Valori de interes";
@@ -991,18 +1212,18 @@ namespace WindowsFormsApplication1
             optimTable.Columns.Add("F(N) (kg/ha)");
             DataRow optimRow1 = optimTable.NewRow();
             optimRow1[0] = "Prag Rentabilitate";
-            optimRow1[1] = optim.pragRentabilitate;
-            optimRow1[2] = F(optim.pragRentabilitate);
+            optimRow1[1] = optim.pragRentabilitate.ToString("#.##");
+            optimRow1[2] = F(optim.pragRentabilitate).ToString("#.##");
             optimTable.Rows.Add(optimRow1);
             DataRow optimRow2 = optimTable.NewRow();
             optimRow2[0] = "Maximum Tehnic";
-            optimRow2[1] = optim.maxTehnic;
-            optimRow2[2] = F(optim.maxTehnic);
+            optimRow2[1] = optim.maxTehnic.ToString("#.##");
+            optimRow2[2] = F(optim.maxTehnic).ToString("#.##");
             optimTable.Rows.Add(optimRow2);
             DataRow optimRow3 = optimTable.NewRow();
             optimRow3[0] = "Optim Economic";
-            optimRow3[1] = optim.optimEconomic;
-            optimRow3[2] = F(optim.optimEconomic);
+            optimRow3[1] = optim.optimEconomic.ToString("#.##");
+            optimRow3[2] = F(optim.optimEconomic).ToString("#.##");
             optimTable.Rows.Add(optimRow3);
             excelDataSet.Tables.Add(optimTable);
 
@@ -1024,28 +1245,62 @@ namespace WindowsFormsApplication1
             pricesTable.Rows.Add(priceRow3);
             excelDataSet.Tables.Add(pricesTable);
 
+
+            DataTable valuesTable2 = new DataTable();
+            valuesTable2.TableName = "Rezultate economice (selectie)";
+            valuesTable2.Columns.Add("Doza (kgsa/ha)");
+            valuesTable2.Columns.Add("Productie (kg/ha)");
+            valuesTable2.Columns.Add("ChT (lei/ha)");
+            valuesTable2.Columns.Add("PVT (lei/ha)");
+            valuesTable2.Columns.Add("BT (lei/ha)");
+            valuesTable2.Columns.Add("ChM (lei/ha)");
+            valuesTable2.Columns.Add("PVM (lei/ha)");
+            valuesTable2.Columns.Add("BVM (lei/ha)");
+            double[] inp2 = new double[inputs.Count + 3];
+            inputs.CopyTo(inp2);
+            inp2[inputs.Count] = optim.pragRentabilitate;
+            inp2[inputs.Count + 1] = optim.maxTehnic;
+            inp2[inputs.Count + 2] = optim.optimEconomic;
+            Array.Sort(inp2);
+            //int step = 0;
+            foreach (double d in inp2)
+            {
+                DataRow r = valuesTable2.NewRow();
+                r[0] = d.ToString("#.##");
+                r[1] = F(d).ToString("#.##");
+                r[2] = Cheltuieli(d).ToString("#.##");
+                r[3] = Incasari(d).ToString("#.##");
+                r[4] = Profit(d).ToString("#.##");
+                r[5] = CheltuieliMg(d).ToString("#.##");
+                r[6] = IncasariMg(d).ToString("#.##");
+                r[7] = ProfitMg(d).ToString("#.##");
+                valuesTable2.Rows.Add(r);
+            }
+            excelDataSet.Tables.Add(valuesTable2);
+
+
             DataTable valuesTable = new DataTable();
             valuesTable.TableName = "Rezultate economice";
             valuesTable.Columns.Add("Doza aplicata (kgsa/ha)");
             valuesTable.Columns.Add("Productie (kg/ha)");
             valuesTable.Columns.Add("Cheltuieli (lei/ha)");
             valuesTable.Columns.Add("Venituri (lei/ha)");
-            valuesTable.Columns.Add("Profit (lei/ha)");
+            valuesTable.Columns.Add("Beneficiu (lei/ha)");
             valuesTable.Columns.Add("Cheltuieli marginale (lei/ha)");
             valuesTable.Columns.Add("Venituri marginale (lei/ha)");
-            valuesTable.Columns.Add("Profit marginal (lei/ha)");
+            valuesTable.Columns.Add("Beneficiu marginal (lei/ha)");
             int step = 0;
             for(step = 0; step <= highestN; step += 10)
             {
                 DataRow r = valuesTable.NewRow();
                 r[0] = step;
-                r[1] = F(step);
-                r[2] = Cheltuieli(step);
-                r[3] = Incasari(step);
-                r[4] = Profit(step);
-                r[5] = CheltuieliMg(step);
-                r[6] = IncasariMg(step);
-                r[7] = ProfitMg(step);
+                r[1] = F(step).ToString("#.##");
+                r[2] = Cheltuieli(step).ToString("#.##");
+                r[3] = Incasari(step).ToString("#.##");
+                r[4] = Profit(step).ToString("#.##");
+                r[5] = CheltuieliMg(step).ToString("#.##");
+                r[6] = IncasariMg(step).ToString("#.##");
+                r[7] = ProfitMg(step).ToString("#.##");
                 valuesTable.Rows.Add(r);
             }
             excelDataSet.Tables.Add(valuesTable);
